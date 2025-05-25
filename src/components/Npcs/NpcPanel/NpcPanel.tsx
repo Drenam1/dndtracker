@@ -22,7 +22,19 @@ export interface INpcPanelProps {
 
 const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
   const [currentNpc, setCurrentNpc] = React.useState<Npc | undefined>(
-    props.npc
+    props.npc || {
+      id: generate_uuidv4(),
+      name: "",
+      physicalDescription: "",
+      voiceNotes: "",
+      personality: "",
+      clocks: [],
+      relationships: [],
+      location: undefined,
+      factions: [],
+      combatTactics: "",
+      socialTactics: "",
+    }
   );
 
   React.useEffect(() => {

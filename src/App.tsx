@@ -74,10 +74,15 @@ function App() {
   ]);
 
   const saveNpc = (npc: Npc) => {
-    const updatedNpcs = npcs.map((existingNpc) =>
-      existingNpc.id === npc.id ? npc : existingNpc
-    );
-    setNpcs(updatedNpcs);
+    if (npcs.find((existingNpc) => existingNpc.id === npc.id) !== undefined) {
+      const updatedNpcs = npcs.map((existingNpc) =>
+        existingNpc.id === npc.id ? npc : existingNpc
+      );
+      setNpcs(updatedNpcs);
+    } else if (npc.name && npc.name.trim() !== "") {
+      const updatedNpcs = [...npcs, npc];
+      setNpcs(updatedNpcs);
+    }
   };
 
   return (

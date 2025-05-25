@@ -61,7 +61,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
           </tbody>
         </table>
       </div>
-      {selectedNpc ? (
+      {panelOpen ? (
         <NpcPanel
           npc={selectedNpc}
           factions={props.factions}
