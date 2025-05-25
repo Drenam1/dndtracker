@@ -27,44 +27,33 @@ const RelationshipControl: React.FunctionComponent<
       />
       {props.defaultValue && props.defaultValue.length > 0 ? (
         <div>
-          <table
-            style={{ width: "100%", borderCollapse: "collapse", marginTop: 8 }}
-          >
+          <table className="controlTable">
             <thead>
               <tr>
-                <th
-                  style={{
-                    textAlign: "left",
-                    borderBottom: "1px solid #ccc",
-                    padding: "4px",
-                  }}
-                >
-                  NPC Name
-                </th>
-                <th
-                  style={{
-                    textAlign: "left",
-                    borderBottom: "1px solid #ccc",
-                    padding: "4px",
-                  }}
-                >
-                  Relationship Type
-                </th>
+                <th>NPC Name</th>
+                <th>Relationship Type</th>
               </tr>
             </thead>
             <tbody>
-              {relationships.map((relationship) => {
-                if (relationship.relationshipType?.length > 0) {
-                  return (
-                    <tr key={generate_uuidv4()}>
-                      <td>{relationship.person.name}</td>
-                      <td>{relationship.relationshipType}</td>
-                    </tr>
-                  );
-                } else {
-                  return null;
-                }
-              })}
+              {relationships
+                .slice()
+                .sort((a, b) => {
+                  const nameA = a.person.name ?? "";
+                  const nameB = b.person.name ?? "";
+                  return nameA.localeCompare(nameB);
+                })
+                .map((relationship) => {
+                  if (relationship.relationshipType?.length > 0) {
+                    return (
+                      <tr key={generate_uuidv4()}>
+                        <td>{relationship.person.name}</td>
+                        <td>{relationship.relationshipType}</td>
+                      </tr>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
             </tbody>
           </table>
         </div>
