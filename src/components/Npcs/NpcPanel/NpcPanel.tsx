@@ -94,7 +94,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           }}
         />
         <TextField
-          label="Voice"
+          label="Voice Notes"
           multiline
           rows={2}
           defaultValue={props.npc?.voiceNotes}

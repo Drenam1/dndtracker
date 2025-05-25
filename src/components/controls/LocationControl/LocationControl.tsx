@@ -26,7 +26,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
         onClick={() => setPanelOpen(true)}
       />
       {selectedLocation ? (
-        <table className="location-table">
+        <table className="location-table controlTable">
           <thead>
             <tr>
               <th>Name</th>

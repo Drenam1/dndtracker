@@ -24,7 +24,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
         onClick={() => setPanelOpen(true)}
       />
       {props.defaultValue && props.defaultValue.length > 0 ? (
-        <table className="faction-table">
+        <table className="faction-table controlTable">
           <thead>
             <tr>
               <th>Name</th>

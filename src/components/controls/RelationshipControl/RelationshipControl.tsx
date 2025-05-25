@@ -17,20 +17,60 @@ const RelationshipControl: React.FunctionComponent<
     props.defaultValue || []
   );
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
+
   return (
     <div className="npc-control">
-      <h3 className="formTitle">{props.label || "NPCs"}</h3>
+      <h3 className="formTitle">People</h3>
       <PrimaryButton
         text={"Manage relationships"}
         onClick={() => setPanelOpen(true)}
       />
       {props.defaultValue && props.defaultValue.length > 0 ? (
         <div>
-          <ul>
-            {relationships.map((relationship) => (
-              <li key={relationship.person.id}>{relationship.person.name} </li>
-            ))}
-          </ul>
+          <table
+            style={{ width: "100%", borderCollapse: "collapse", marginTop: 8 }}
+          >
+            <thead>
+              <tr>
+                <th
+                  style={{
+                    textAlign: "left",
+                    borderBottom: "1px solid #ccc",
+                    padding: "4px",
+                  }}
+                >
+                  NPC Name
+                </th>
+                <th
+                  style={{
+                    textAlign: "left",
+                    borderBottom: "1px solid #ccc",
+                    padding: "4px",
+                  }}
+                >
+                  Relationship Type
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {relationships.map((relationship) => (
+                <tr key={relationship.person.id}>
+                  <td
+                    style={{ padding: "4px", borderBottom: "1px solid #eee" }}
+                  >
+                    {relationship.person.name}
+                  </td>
+                  <td
+                    style={{ padding: "4px", borderBottom: "1px solid #eee" }}
+                  >
+                    {relationship.relationshipType || (
+                      <span style={{ color: "#888" }}>—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div>No npcs selected.</div>
@@ -45,32 +85,91 @@ const RelationshipControl: React.FunctionComponent<
           isLightDismiss={true}
           isBlocking={true}
           type={PanelType.smallFixedFar}
+          onRenderFooterContent={() => (
+            <PrimaryButton
+              text="Save"
+              onClick={() => {
+                if (props.onSave) {
+                  props.onSave(relationships);
+                }
+                setPanelOpen(false);
+              }}
+              style={{ marginTop: 16 }}
+            />
+          )}
         >
           <div>
-            <h3>Select a Npc</h3>
-            {props.allNpcs && props.allNpcs.length > 0 ? (
-              <div>
-                <form>
-                  {props.allNpcs.map((npc) => (
-                    <div key={npc.id} style={{ marginBottom: 8 }}>
-                      <label>
-                        <input type="checkbox" name="npc" value={npc.id} />
-                        {npc.name}
-                      </label>
-                    </div>
-                  ))}
-                </form>
-                <PrimaryButton
-                  text="Save"
-                  onClick={() => {
-                    setPanelOpen(false);
+            <h2>Manage Relationships</h2>
+            <p>
+              Add or edit relationships between NPCs. You can specify the type
+              of relationship (e.g., friend, enemy, ally) for each NPC.
+              Relationships won't appear unless they have a type specified.
+            </p>
+            {relationships.map((relationship, idx) => (
+              <div
+                key={relationship.person.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: 8,
+                }}
+              >
+                <span style={{ flex: 1 }}>{relationship.person.name}</span>
+                <input
+                  type="text"
+                  value={relationship.relationshipType}
+                  onChange={(e) => {
+                    const updated = [...relationships];
+                    updated[idx] = {
+                      ...relationship,
+                      relationshipType: e.target.value,
+                    };
+                    setRelationships(updated);
                   }}
-                  style={{ marginTop: 16 }}
+                  placeholder="Relationship type"
+                  style={{ marginRight: 8 }}
                 />
+
+                <button
+                  onClick={() => {
+                    setRelationships(relationships.filter((_, i) => i !== idx));
+                  }}
+                  aria-label="Delete relationship"
+                >
+                  Delete
+                </button>
               </div>
-            ) : (
-              <div>No npcs available.</div>
-            )}
+            ))}
+
+            <div
+              style={{ display: "flex", alignItems: "center", marginTop: 16 }}
+            >
+              <select
+                style={{ flex: 1, marginRight: 8 }}
+                defaultValue=""
+                onChange={(e) => {
+                  const npcId = e.target.value;
+                  if (!npcId) return;
+                  const npc = props.allNpcs?.find((n) => n.id === npcId);
+                  if (npc) {
+                    setRelationships([
+                      ...relationships,
+                      { person: npc, relationshipType: "" },
+                    ]);
+                  }
+                  e.target.value = "";
+                }}
+              >
+                <option value="" disabled>
+                  Add NPC...
+                </option>
+                {props.allNpcs?.map((npc) => (
+                  <option key={npc.id} value={npc.id}>
+                    {npc.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </Panel>
       )}
