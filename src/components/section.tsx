@@ -2,7 +2,6 @@ import React from "react";
 import { Npc } from "../models/Npc";
 import { Location } from "../models/Location";
 import { Faction } from "../models/Faction";
-import npcPanel from "./NpcPanel/NpcPanel";
 import { DefaultButton } from "@fluentui/react";
 import Npcs from "./npcs/npcs";
 
