@@ -4,6 +4,7 @@ import React from "react";
 import NpcPanel from "./NpcPanel/NpcPanel";
 import { Faction } from "../../models/Faction";
 import { Location } from "../../models/Location";
+import "./NpcSectionStyles.css";
 
 export interface INpcSectionProps {
   npcs: Npc[];
@@ -17,9 +18,12 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
   const [selectedNpc, setSelectedNpc] = React.useState<Npc | undefined>(
     undefined
   );
+  const [filteredNpcs, setFilteredNpcs] = React.useState<Npc[] | []>(
+    props.npcs
+  );
 
   return (
-    <>
+    <div className="npcSection">
       <DefaultButton
         text="Create New NPC"
         className="createNewItemButton"
@@ -28,15 +32,29 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
         }}
       />
       <div>
+        <input
+          type="text"
+          placeholder="Filter NPCs by name..."
+          onChange={(e) => {
+            const value = e.target.value.toLowerCase();
+            const filteredNpcs = props.npcs.filter(
+              (npc) =>
+                npc.name?.toLowerCase().includes(value) ||
+                npc.location?.name?.toLowerCase().includes(value)
+            );
+            setFilteredNpcs(filteredNpcs);
+          }}
+          style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+        />
         <table>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
+              <th>Location</th>
             </tr>
           </thead>
           <tbody>
-            {props.npcs.map((npc: Npc) => {
+            {filteredNpcs.map((npc: Npc) => {
               return (
                 <tr key={npc.id}>
                   <td
@@ -45,7 +63,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
                       setPanelOpen(true);
                     }}
                   >
-                    {npc.id}
+                    {npc.name}
                   </td>
                   <td
                     onClick={() => {
@@ -53,7 +71,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
                       setPanelOpen(true);
                     }}
                   >
-                    {npc.name}
+                    {npc?.location?.name}
                   </td>
                 </tr>
               );
@@ -75,7 +93,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
           saveNpc={props.saveNpc}
         />
       ) : null}
-    </>
+    </div>
   );
 };
 export default NpcSection;
