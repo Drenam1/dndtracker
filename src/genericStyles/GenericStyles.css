@@ -1,0 +1,11 @@
+.formTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(50, 49, 48);
+  box-sizing: border-box;
+  box-shadow: none;
+  margin: 0px;
+  display: block;
+  padding: 5px 0px;
+  overflow-wrap: break-word;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { Location } from "../../../models/Location";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import { Npc } from "../../../models/Npc";
+import "../../../genericStyles/GenericStyles.css";
 
 export interface ILocationControlProps {
   npc?: Npc;
@@ -19,7 +20,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="location-control">
-      <h3>Locations</h3>
+      <h3 className="formTitle">Locations</h3>
       <PrimaryButton
         text={"Manage locations"}
         onClick={() => setPanelOpen(true)}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Npc, Relationship } from "../../../models/Npc";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
+import "../../../genericStyles/GenericStyles.css";
 
 export interface IRelationshipControlProps {
   label?: string;
@@ -18,7 +19,7 @@ const RelationshipControl: React.FunctionComponent<
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="npc-control">
-      <h3>{props.label || "NPCs"}</h3>
+      <h3 className="formTitle">{props.label || "NPCs"}</h3>
       <PrimaryButton
         text={"Manage relationships"}
         onClick={() => setPanelOpen(true)}

@@ -1,7 +1,25 @@
-.clockContainer {
+.clocksContainer {
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  width: 100%;
+  height: auto;
+  min-height: 50px;
+  -webkit-flex-wrap: wrap;
+}
+.container {
+  -webkit-flex: 1;
+  min-width: 16%;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  .title {
+    text-align: center;
+  }
 }
 .clockSvg {
   transform: rotate(-89deg);
+}
+
+.clockEditRow {
+  margin-bottom: 5px;
 }

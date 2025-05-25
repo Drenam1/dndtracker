@@ -13,7 +13,6 @@ export interface Npc {
   voiceNotes?: string;
   location?: Location;
   personality?: string;
-  goals?: string;
   relationships?: Relationship[];
   factions?: Faction[];
   combatTactics?: string;

@@ -1,6 +1,7 @@
 import React from "react";
 import { Faction } from "../../../models/Faction";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
+import "../../../genericStyles/GenericStyles.css";
 
 export interface IFactionControlProps {
   defaultValue?: Faction[];
@@ -17,7 +18,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="faction-control">
-      <h3>Factions</h3>
+      <h3 className="formTitle">Factions</h3>
       <PrimaryButton
         text={"Manage factions"}
         onClick={() => setPanelOpen(true)}

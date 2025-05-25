@@ -72,8 +72,9 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
             }
           }}
         />
+        <h3>Descriptors</h3>
         <TextField
-          label="Physical Description"
+          label="Physical"
           multiline
           rows={2}
           defaultValue={props.npc?.physicalDescription}
@@ -92,25 +93,8 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
             }
           }}
         />
-        <ClockControl
-          defaultValue={props.npc?.clocks}
-          onSave={(clocks) => {
-            if (currentNpc) {
-              const updatedNpc = {
-                ...currentNpc,
-                clocks: clocks,
-              };
-              setCurrentNpc(updatedNpc);
-            } else {
-              setCurrentNpc({
-                id: generate_uuidv4(),
-                clocks: clocks,
-              });
-            }
-          }}
-        />
         <TextField
-          label="Voice Notes"
+          label="Voice"
           multiline
           rows={2}
           defaultValue={props.npc?.voiceNotes}
@@ -149,28 +133,26 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
             }
           }}
         />
-        <TextField
-          label="Goals"
-          multiline
-          rows={2}
-          defaultValue={props.npc?.goals}
-          onChange={(event, newValue) => {
+        <ClockControl
+          defaultValue={props.npc?.clocks}
+          onSave={(clocks) => {
             if (currentNpc) {
               const updatedNpc = {
                 ...currentNpc,
-                goals: newValue,
+                clocks: clocks,
               };
               setCurrentNpc(updatedNpc);
             } else {
               setCurrentNpc({
-                id: "",
-                goals: newValue,
+                id: generate_uuidv4(),
+                clocks: clocks,
               });
             }
           }}
         />
+        <h3>Relationships</h3>
         <RelationshipControl
-          label="Relationships"
+          label="People"
           defaultValue={currentNpc?.relationships}
           allNpcs={props.npcs.filter((npc) => npc.id !== currentNpc?.id)}
           onSave={(relationships: Relationship[]) => {
@@ -224,7 +206,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
             }
           }}
         />
-        <h1>Tactics</h1>
+        <h3>Tactics</h3>
         <TextField
           label="Combat Tactics"
           multiline
