@@ -3,7 +3,6 @@ import { Location } from "./Location";
 import { Npc } from "./Npc";
 
 export interface Faction {
-  type: "faction";
   id: string;
   name: string;
   description?: string;

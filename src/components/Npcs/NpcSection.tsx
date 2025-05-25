@@ -2,9 +2,13 @@ import { DefaultButton } from "@fluentui/react";
 import { Npc } from "../../models/Npc";
 import React from "react";
 import NpcPanel from "./NpcPanel/NpcPanel";
+import { Faction } from "../../models/Faction";
+import { Location } from "../../models/Location";
 
 export interface INpcSectionProps {
   npcs: Npc[];
+  factions: Faction[];
+  locations: Location[];
   saveNpc: (npc: Npc) => void;
 }
 
@@ -59,12 +63,15 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
           </tbody>
         </table>
       </div>
-      {selectedNpc || creatingNewItem ? (
+      {selectedNpc ? (
         <NpcPanel
           npc={selectedNpc}
+          factions={props.factions}
+          locations={props.locations}
           isOpen={panelOpen}
           onDismiss={() => {
             setPanelOpen(false);
+            setSelectedNpc(undefined);
             setCreatingNewItem(false);
           }}
           saveNpc={props.saveNpc}

@@ -3,9 +3,15 @@ import "./NpcPanel.css";
 import { Panel, PanelType, PrimaryButton, TextField } from "@fluentui/react";
 import { Npc } from "../../../models/Npc";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
+import { Faction } from "../../../models/Faction";
+import { Location } from "../../../models/Location";
+import FactionControl from "../../controls/FactionControl/FactionControl";
+import LocationControl from "../../controls/LocationControl/LocationControl";
 
 export interface INpcPanelProps {
   npc?: Npc;
+  factions: Faction[];
+  locations: Location[];
   isOpen: boolean;
   onDismiss?: any;
   saveNpc?: (npc: Npc) => void;
@@ -15,16 +21,26 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
   const [currentNpc, setCurrentNpc] = React.useState<Npc | undefined>(
     props.npc
   );
-  console.log("Current NPC:", currentNpc);
+
+  React.useEffect(() => {
+    if (props.npc) {
+      setCurrentNpc(props.npc);
+    }
+  }, [props.npc]);
+
   return (
     <Panel
       isOpen={props.isOpen}
-      onDismiss={props.onDismiss}
+      onDismiss={() => {
+        setCurrentNpc(undefined);
+        props.onDismiss();
+      }}
       isLightDismiss={true}
       isBlocking={true}
       type={PanelType.medium}
       onRenderFooterContent={() => (
         <PrimaryButton
+          text="Save"
           onClick={() => {
             if (props.saveNpc && currentNpc) {
               props.saveNpc(currentNpc);
@@ -47,7 +63,6 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
               setCurrentNpc(updatedNpc);
             } else {
               setCurrentNpc({
-                type: "npc",
                 id: generate_uuidv4(),
                 name: newValue,
               });
@@ -68,22 +83,48 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
               setCurrentNpc(updatedNpc);
             } else {
               setCurrentNpc({
-                type: "npc",
                 id: "",
                 physicalDescription: newValue,
               });
             }
           }}
         />
-        <TextField
-          label="Factions"
-          multiline
-          rows={3}
-          defaultValue={props.npc?.factions
-            ?.map((faction) => faction.name)
-            .join(", ")}
+        <LocationControl
+          npc={currentNpc}
+          allLocations={props.locations}
+          onSave={(location: Location) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                location: location,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: generate_uuidv4(),
+                location: location,
+              });
+            }
+          }}
         />
-        <TextField label="Location" defaultValue={props.npc?.location?.name} />
+        <FactionControl
+          defaultValue={currentNpc?.factions}
+          allFactions={props.factions}
+          onSave={(factions: Faction[]) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                factions: factions,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: generate_uuidv4(),
+                factions: factions,
+              });
+            }
+          }}
+        />
       </div>
     </Panel>
   );

@@ -3,7 +3,6 @@ import { Faction } from "./Faction";
 import { Clock } from "./Clock";
 
 export interface Npc {
-  type?: "npc";
   id?: string;
   name?: string;
   physicalDescription?: string;

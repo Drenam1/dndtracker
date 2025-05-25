@@ -3,7 +3,6 @@ import { Faction } from "./Faction";
 import { Clock } from "./Clock";
 
 export interface Location {
-  type: "location";
   id: string;
   name: string;
   description?: string;

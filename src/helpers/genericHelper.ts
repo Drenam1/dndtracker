@@ -45,7 +45,6 @@ export default class GenericHelper {
       });
       setFactions(newFactions);
     } else {
-      console.log(factions);
       setFactions(factions);
     }
   }
