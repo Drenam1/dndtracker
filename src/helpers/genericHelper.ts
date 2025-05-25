@@ -1,6 +1,6 @@
 import { confirmAlert } from "react-confirm-alert";
 import FactionHelper, { Faction } from "./FactionHelper";
-import RollHelper from "./RollHelper";
+import * as RollHelper from "./RollHelper";
 
 export interface Clock {
   name: string;

@@ -1,4 +1,4 @@
-import RollHelper from "./RollHelper";
+import * as RollHelper from "./RollHelper";
 
 export interface Person {
   wealth: string;

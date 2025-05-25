@@ -5,21 +5,40 @@ import SaveLoadHelper from "./helpers/SaveLoadHelper";
 import { Faction } from "./models/Faction";
 import { Location } from "./models/Location";
 import { Npc } from "./models/Npc";
-import Section from "./components/section";
-import ItemPanel from "./components/NpcPanel/NpcPanel";
+import NpcSection from "./components/Npcs/NpcSection";
 
 initializeIcons();
 //To compile, run npm start
 
 function App() {
   const [factions, setFactions] = React.useState<Faction[]>([]);
-  const [npcs, setNpcs] = React.useState<Npc[]>([]);
+  const [npcs, setNpcs] = React.useState<Npc[]>([
+    {
+      type: "npc",
+      id: "fec48f6f-4f44-46d0-b0f4-92b29b7f6cb6",
+      name: "dummy",
+      physicalDescription: "dummyphys",
+    },
+    {
+      type: "npc",
+      id: "8b478943-8f4f-448a-a74a-6272e4c50ee0",
+      name: "dummy2",
+      physicalDescription: "dummy2phys",
+    },
+  ]);
   const [locations, setLocations] = React.useState<Location[]>([]);
   const [selectedItems, setSelectedItems] = React.useState<any[]>([]);
   const [creatingNewItem, setCreatingNewItem] = React.useState<string>("");
 
   console.log(selectedItems);
   console.log(creatingNewItem);
+
+  const saveNpc = (npc: Npc) => {
+    const updatedNpcs = npcs.map((existingNpc) =>
+      existingNpc.id === npc.id ? npc : existingNpc
+    );
+    setNpcs(updatedNpcs);
+  };
 
   return (
     <div className="App">
@@ -57,52 +76,10 @@ function App() {
         />
       </div>
       <div id="containerContainer">
-        <Section
-          defaultSection={"npcs"}
-          npcs={npcs}
-          locations={locations}
-          factions={factions}
-          setNpcs={setNpcs}
-          setLocations={setLocations}
-          setFactions={setFactions}
-          selectId="leftSectionSelect"
-          selectedItems={selectedItems}
-          setSelectedItems={itemSelect}
-          creatingNewItem={setCreatingNewItem}
-        />
-        <Section
-          defaultSection={"rules"}
-          npcs={npcs}
-          locations={locations}
-          factions={factions}
-          setNpcs={setNpcs}
-          setLocations={setLocations}
-          setFactions={setFactions}
-          selectId="rightSectionSelect"
-          selectedItems={selectedItems}
-          setSelectedItems={itemSelect}
-          creatingNewItem={setCreatingNewItem}
-        />
+        <NpcSection npcs={npcs} saveNpc={saveNpc} />
       </div>
-      {selectedItems.length > 0 || creatingNewItem !== "" ? (
-        <ItemPanel
-          items={selectedItems}
-          onDismiss={() => {
-            setSelectedItems([]);
-            setCreatingNewItem("");
-          }}
-        />
-      ) : null}
     </div>
   );
-
-  function itemSelect(item: any) {
-    if (item) {
-      const newArray = [...selectedItems];
-      newArray.push(item);
-      setSelectedItems(newArray);
-    }
-  }
 }
 
 export default App;

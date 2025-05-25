@@ -1,4 +1,4 @@
-import RollHelper from "./RollHelper";
+import * as RollHelper from "./RollHelper";
 import OpenAI from "openai";
 
 export interface Street {

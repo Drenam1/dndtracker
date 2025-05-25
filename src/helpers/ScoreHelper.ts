@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import FactionHelper from "./FactionHelper";
-import RollHelper from "./RollHelper";
+import * as RollHelper from "./RollHelper";
 
 export interface Score {
   client: string;
