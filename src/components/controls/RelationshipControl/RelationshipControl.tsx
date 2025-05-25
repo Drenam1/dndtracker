@@ -2,9 +2,9 @@ import React from "react";
 import { Npc, Relationship } from "../../../models/Npc";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import "../../../genericStyles/GenericStyles.css";
+import { generate_uuidv4 } from "../../../helpers/RollHelper";
 
 export interface IRelationshipControlProps {
-  label?: string;
   defaultValue?: Relationship[];
   allNpcs?: Npc[];
   onSave?: (relatonships: Relationship[]) => void;
@@ -53,22 +53,18 @@ const RelationshipControl: React.FunctionComponent<
               </tr>
             </thead>
             <tbody>
-              {relationships.map((relationship) => (
-                <tr key={relationship.person.id}>
-                  <td
-                    style={{ padding: "4px", borderBottom: "1px solid #eee" }}
-                  >
-                    {relationship.person.name}
-                  </td>
-                  <td
-                    style={{ padding: "4px", borderBottom: "1px solid #eee" }}
-                  >
-                    {relationship.relationshipType || (
-                      <span style={{ color: "#888" }}>—</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {relationships.map((relationship) => {
+                if (relationship.relationshipType?.length > 0) {
+                  return (
+                    <tr key={generate_uuidv4()}>
+                      <td>{relationship.person.name}</td>
+                      <td>{relationship.relationshipType}</td>
+                    </tr>
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </tbody>
           </table>
         </div>
@@ -107,7 +103,7 @@ const RelationshipControl: React.FunctionComponent<
             </p>
             {relationships.map((relationship, idx) => (
               <div
-                key={relationship.person.id}
+                key={relationship.person.id + idx}
                 style={{
                   display: "flex",
                   alignItems: "center",

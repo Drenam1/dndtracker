@@ -152,7 +152,6 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
         />
         <h3>Relationships</h3>
         <RelationshipControl
-          label="People"
           defaultValue={currentNpc?.relationships}
           allNpcs={props.npcs.filter((npc) => npc.id !== currentNpc?.id)}
           onSave={(relationships: Relationship[]) => {
