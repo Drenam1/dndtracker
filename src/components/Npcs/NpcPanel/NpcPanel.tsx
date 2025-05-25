@@ -1,17 +1,20 @@
 import React from "react";
 import "./NpcPanel.css";
 import { Panel, PanelType, PrimaryButton, TextField } from "@fluentui/react";
-import { Npc } from "../../../models/Npc";
+import { Npc, Relationship } from "../../../models/Npc";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
 import { Faction } from "../../../models/Faction";
 import { Location } from "../../../models/Location";
 import FactionControl from "../../controls/FactionControl/FactionControl";
 import LocationControl from "../../controls/LocationControl/LocationControl";
+import RelationshipControl from "../../controls/RelationshipControl/RelationshipControl";
+import ClockControl from "../../controls/ClockControl/ClockControl";
 
 export interface INpcPanelProps {
   npc?: Npc;
   factions: Faction[];
   locations: Location[];
+  npcs: Npc[];
   isOpen: boolean;
   onDismiss?: any;
   saveNpc?: (npc: Npc) => void;
@@ -72,7 +75,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
         <TextField
           label="Physical Description"
           multiline
-          rows={3}
+          rows={2}
           defaultValue={props.npc?.physicalDescription}
           onChange={(event, newValue) => {
             if (currentNpc) {
@@ -85,6 +88,102 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
               setCurrentNpc({
                 id: "",
                 physicalDescription: newValue,
+              });
+            }
+          }}
+        />
+        <ClockControl
+          defaultValue={props.npc?.clocks}
+          onSave={(clocks) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                clocks: clocks,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: generate_uuidv4(),
+                clocks: clocks,
+              });
+            }
+          }}
+        />
+        <TextField
+          label="Voice Notes"
+          multiline
+          rows={2}
+          defaultValue={props.npc?.voiceNotes}
+          onChange={(event, newValue) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                voiceNotes: newValue,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: "",
+                voiceNotes: newValue,
+              });
+            }
+          }}
+        />
+        <TextField
+          label="Personality"
+          multiline
+          rows={2}
+          defaultValue={props.npc?.personality}
+          onChange={(event, newValue) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                personality: newValue,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: "",
+                personality: newValue,
+              });
+            }
+          }}
+        />
+        <TextField
+          label="Goals"
+          multiline
+          rows={2}
+          defaultValue={props.npc?.goals}
+          onChange={(event, newValue) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                goals: newValue,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: "",
+                goals: newValue,
+              });
+            }
+          }}
+        />
+        <RelationshipControl
+          label="Relationships"
+          defaultValue={currentNpc?.relationships}
+          allNpcs={props.npcs.filter((npc) => npc.id !== currentNpc?.id)}
+          onSave={(relationships: Relationship[]) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                relationships: relationships,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: generate_uuidv4(),
+                relationships: relationships,
               });
             }
           }}
@@ -121,6 +220,47 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
               setCurrentNpc({
                 id: generate_uuidv4(),
                 factions: factions,
+              });
+            }
+          }}
+        />
+        <h1>Tactics</h1>
+        <TextField
+          label="Combat Tactics"
+          multiline
+          rows={2}
+          defaultValue={props.npc?.combatTactics}
+          onChange={(event, newValue) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                combatTactics: newValue,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: "",
+                combatTactics: newValue,
+              });
+            }
+          }}
+        />
+        <TextField
+          label="Social Tactics"
+          multiline
+          rows={2}
+          defaultValue={props.npc?.socialTactics}
+          onChange={(event, newValue) => {
+            if (currentNpc) {
+              const updatedNpc = {
+                ...currentNpc,
+                socialTactics: newValue,
+              };
+              setCurrentNpc(updatedNpc);
+            } else {
+              setCurrentNpc({
+                id: "",
+                socialTactics: newValue,
               });
             }
           }}

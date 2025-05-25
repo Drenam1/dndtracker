@@ -17,7 +17,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="faction-control">
-      <h2>Factions</h2>
+      <h3>Factions</h3>
       <PrimaryButton
         text={"Manage factions"}
         onClick={() => setPanelOpen(true)}

@@ -1,7 +1,7 @@
 export interface Clock {
   id: string;
   name: string;
-  description?: string;
-  maxSegments?: number;
-  currentSegments?: number;
+  description: string;
+  totalSegments: number;
+  filledSegments: number;
 }

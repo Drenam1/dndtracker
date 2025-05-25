@@ -13,7 +13,6 @@ export interface INpcSectionProps {
 }
 
 const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
-  const [creatingNewItem, setCreatingNewItem] = React.useState<boolean>(false);
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   const [selectedNpc, setSelectedNpc] = React.useState<Npc | undefined>(
     undefined
@@ -25,7 +24,6 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
         text="Create New NPC"
         className="createNewItemButton"
         onClick={() => {
-          setCreatingNewItem(true);
           setPanelOpen(true);
         }}
       />
@@ -68,11 +66,11 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
           npc={selectedNpc}
           factions={props.factions}
           locations={props.locations}
+          npcs={props.npcs}
           isOpen={panelOpen}
           onDismiss={() => {
             setPanelOpen(false);
             setSelectedNpc(undefined);
-            setCreatingNewItem(false);
           }}
           saveNpc={props.saveNpc}
         />

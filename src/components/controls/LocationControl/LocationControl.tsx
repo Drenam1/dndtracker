@@ -19,7 +19,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="location-control">
-      <h2>Locations</h2>
+      <h3>Locations</h3>
       <PrimaryButton
         text={"Manage locations"}
         onClick={() => setPanelOpen(true)}

@@ -34,6 +34,15 @@ function App() {
       physicalDescription: "A big armored imperial.",
       factions: [],
       location: undefined,
+      clocks: [
+        {
+          id: "d1e2f3g4-h5i6-j7k8-l9m0-n1o2p3q4r5s6",
+          name: "Winthrop's Quest",
+          description: "A quest to find Winthrop's lost sword.",
+          totalSegments: 8,
+          filledSegments: 3,
+        },
+      ],
     },
     {
       id: "8b478943-8f4f-448a-a74a-6272e4c50ee0",

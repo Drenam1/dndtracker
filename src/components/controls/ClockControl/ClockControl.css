@@ -1,0 +1,7 @@
+.clockContainer {
+  display: flex;
+  gap: 10px;
+}
+.clockSvg {
+  transform: rotate(-89deg);
+}
