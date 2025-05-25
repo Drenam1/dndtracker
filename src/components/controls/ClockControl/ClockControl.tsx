@@ -55,6 +55,8 @@ const ClockControl: React.FunctionComponent<IClockControlProps> = (props) => {
                   </div>
                 </div>
               );
+            } else {
+              return null;
             }
           })}
         </div>
@@ -106,13 +108,13 @@ const ClockControl: React.FunctionComponent<IClockControlProps> = (props) => {
                 <input
                   type="number"
                   min={1}
-                  max={12}
+                  max={20}
                   value={clock.totalSegments}
                   onChange={(e) => {
                     const updated = [...clocks];
                     updated[idx] = {
                       ...clock,
-                      totalSegments: Math.min(Number(e.target.value), 12),
+                      totalSegments: Math.min(Number(e.target.value), 20),
                     };
                     setClocks(updated);
                   }}
