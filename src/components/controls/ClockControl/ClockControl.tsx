@@ -14,7 +14,6 @@ export interface IClockControlProps {
 const ClockControl: React.FunctionComponent<IClockControlProps> = (props) => {
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   const [clocks, setClocks] = React.useState<Clock[]>(props.defaultValue || []);
-  console.log(clocks);
   return (
     <div className="clock-control">
       <h3 className="formTitle">Goals</h3>

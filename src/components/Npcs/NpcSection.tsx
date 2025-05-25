@@ -22,6 +22,10 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
     props.npcs
   );
 
+  React.useEffect(() => {
+    setFilteredNpcs(props.npcs);
+  }, [props.npcs]);
+
   return (
     <div className="npcSection">
       <DefaultButton
@@ -34,7 +38,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
       <div>
         <input
           type="text"
-          placeholder="Filter NPCs by name..."
+          placeholder="Filter NPCs..."
           onChange={(e) => {
             const value = e.target.value.toLowerCase();
             const filteredNpcs = props.npcs.filter(
@@ -44,38 +48,44 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
             );
             setFilteredNpcs(filteredNpcs);
           }}
-          style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
         />
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Location</th>
+              <th style={{ minWidth: "200px" }}>Name</th>
+              <th style={{ minWidth: "200px" }}>Location</th>
             </tr>
           </thead>
           <tbody>
-            {filteredNpcs.map((npc: Npc) => {
-              return (
-                <tr key={npc.id}>
-                  <td
-                    onClick={() => {
-                      setSelectedNpc(npc);
-                      setPanelOpen(true);
-                    }}
-                  >
-                    {npc.name}
-                  </td>
-                  <td
-                    onClick={() => {
-                      setSelectedNpc(npc);
-                      setPanelOpen(true);
-                    }}
-                  >
-                    {npc?.location?.name}
-                  </td>
-                </tr>
-              );
-            })}
+            {filteredNpcs
+              .slice()
+              .sort((a, b) => {
+                const nameA = a.name ?? "";
+                const nameB = b.name ?? "";
+                return nameA.localeCompare(nameB);
+              })
+              .map((npc: Npc) => {
+                return (
+                  <tr key={npc.id} style={{ cursor: "pointer" }}>
+                    <td
+                      onClick={() => {
+                        setSelectedNpc(npc);
+                        setPanelOpen(true);
+                      }}
+                    >
+                      {npc.name}
+                    </td>
+                    <td
+                      onClick={() => {
+                        setSelectedNpc(npc);
+                        setPanelOpen(true);
+                      }}
+                    >
+                      {npc?.location?.name}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

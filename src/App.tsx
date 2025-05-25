@@ -73,6 +73,38 @@ function App() {
     },
   ]);
 
+  React.useEffect(() => {
+    const loadFromLocalCache = () => {
+      const cachedNpcs = localStorage.getItem("dndtracker-npcs");
+      const cachedFactions = localStorage.getItem("dndtracker-factions");
+      const cachedLocations = localStorage.getItem("dndtracker-locations");
+
+      if (cachedNpcs) {
+        setNpcs(JSON.parse(cachedNpcs));
+      }
+      if (cachedFactions) {
+        setFactions(JSON.parse(cachedFactions));
+      }
+      if (cachedLocations) {
+        setLocations(JSON.parse(cachedLocations));
+      }
+    };
+
+    loadFromLocalCache();
+  }, []);
+
+  React.useEffect(() => {
+    const saveToLocalCache = () => {
+      localStorage.setItem("dndtracker-npcs", JSON.stringify(npcs));
+      localStorage.setItem("dndtracker-factions", JSON.stringify(factions));
+      localStorage.setItem("dndtracker-locations", JSON.stringify(locations));
+    };
+
+    const interval = setInterval(saveToLocalCache, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
+  }, [npcs, factions, locations]);
+
   const saveNpc = (npc: Npc) => {
     if (npcs.find((existingNpc) => existingNpc.id === npc.id) !== undefined) {
       const updatedNpcs = npcs.map((existingNpc) =>
@@ -119,6 +151,10 @@ function App() {
             })
           }
         />
+        <p style={{ margin: "unset" }}>
+          The saved data will save to the cache at 5-minute intervals to reduce
+          the chance of loss of data.
+        </p>
       </div>
       <div id="containerContainer">
         <NpcSection
