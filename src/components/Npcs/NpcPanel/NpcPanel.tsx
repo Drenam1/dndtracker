@@ -34,6 +34,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       factions: [],
       combatTactics: "",
       socialTactics: "",
+      additionalNotes: "",
     }
   );
 
@@ -259,6 +260,26 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           }}
         />
       </div>
+      <TextField
+        label="Additional Notes"
+        multiline
+        rows={4}
+        defaultValue={props.npc?.additionalNotes}
+        onChange={(event, newValue) => {
+          if (currentNpc) {
+            const updatedNpc = {
+              ...currentNpc,
+              additionalNotes: newValue,
+            };
+            setCurrentNpc(updatedNpc);
+          } else {
+            setCurrentNpc({
+              id: "",
+              additionalNotes: newValue,
+            });
+          }
+        }}
+      />
     </Panel>
   );
 };
