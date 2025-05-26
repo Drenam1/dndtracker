@@ -60,9 +60,7 @@ const ClockControl: React.FunctionComponent<IClockControlProps> = (props) => {
             }
           })}
         </div>
-      ) : (
-        <div>No clocks.</div>
-      )}
+      ) : null}
       {panelOpen && (
         <Panel
           isOpen={panelOpen}

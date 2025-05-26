@@ -29,10 +29,6 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
   return (
     <div className="location-control">
       <h3 className="formTitle">Locations</h3>
-      <PrimaryButton
-        text={"Manage locations"}
-        onClick={() => setPanelOpen(true)}
-      />
       {locations && locations.length > 0 ? (
         <table className="location-table controlTable">
           <thead>
@@ -50,9 +46,11 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
             ))}
           </tbody>
         </table>
-      ) : (
-        <div>No locations selected.</div>
-      )}
+      ) : null}
+      <PrimaryButton
+        text={"Manage locations"}
+        onClick={() => setPanelOpen(true)}
+      />
       {panelOpen && (
         <Panel
           isOpen={panelOpen}
@@ -122,9 +120,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
                   style={{ marginTop: 16 }}
                 />
               </div>
-            ) : (
-              <div>No locations available.</div>
-            )}
+            ) : null}
           </div>
         </Panel>
       )}

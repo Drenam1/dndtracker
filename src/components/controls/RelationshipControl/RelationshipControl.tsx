@@ -33,10 +33,6 @@ const RelationshipControl: React.FunctionComponent<
   return (
     <div className="npc-control">
       <h3 className="formTitle">People</h3>
-      <PrimaryButton
-        text={"Manage relationships"}
-        onClick={() => setPanelOpen(true)}
-      />
       {relationships && relationships.length > 0 ? (
         <div>
           <table className="controlTable">
@@ -69,9 +65,11 @@ const RelationshipControl: React.FunctionComponent<
             </tbody>
           </table>
         </div>
-      ) : (
-        <div>No npcs selected.</div>
-      )}
+      ) : null}
+      <PrimaryButton
+        text={"Manage relationships"}
+        onClick={() => setPanelOpen(true)}
+      />
       {panelOpen && (
         <Panel
           isOpen={panelOpen}

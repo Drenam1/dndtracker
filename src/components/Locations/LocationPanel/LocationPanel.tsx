@@ -218,6 +218,11 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                     .map((location: Location) => location.id)
                     .includes(currentLocation?.id)
               )
+              ?.sort((a, b) => {
+                const nameA = a.name ?? "";
+                const nameB = b.name ?? "";
+                return nameA.localeCompare(nameB);
+              })
               ?.map((npc) => ({
                 key: npc.id,
                 text: npc.name ?? "",

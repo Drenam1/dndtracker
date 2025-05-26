@@ -193,6 +193,11 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
                     .map((faction: Faction) => faction.id)
                     .includes(currentFaction?.id)
               )
+              ?.sort((a, b) => {
+                const nameA = a.name ?? "";
+                const nameB = b.name ?? "";
+                return nameA.localeCompare(nameB);
+              })
               ?.map((npc) => ({
                 key: npc.id,
                 text: npc.name ?? "",

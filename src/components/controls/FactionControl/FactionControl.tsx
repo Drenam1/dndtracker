@@ -29,10 +29,6 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
   return (
     <div className="faction-control">
       <h3 className="formTitle">Factions</h3>
-      <PrimaryButton
-        text={"Manage factions"}
-        onClick={() => setPanelOpen(true)}
-      />
       {factions && factions.length > 0 ? (
         <table className="faction-table controlTable">
           <thead>
@@ -50,9 +46,11 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
             ))}
           </tbody>
         </table>
-      ) : (
-        <div>No factions selected.</div>
-      )}
+      ) : null}
+      <PrimaryButton
+        text={"Manage factions"}
+        onClick={() => setPanelOpen(true)}
+      />
       {panelOpen && (
         <Panel
           isOpen={panelOpen}
@@ -120,9 +118,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
                   style={{ marginTop: 16 }}
                 />
               </div>
-            ) : (
-              <div>No factions available.</div>
-            )}
+            ) : null}
           </div>
         </Panel>
       )}
