@@ -54,7 +54,7 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
           <thead>
             <tr>
               <th style={{ minWidth: "200px" }}>Name</th>
-              <th style={{ minWidth: "200px" }}>Locations</th>
+              <th style={{ minWidth: "200px" }}>Associated Locations</th>
             </tr>
           </thead>
           <tbody>

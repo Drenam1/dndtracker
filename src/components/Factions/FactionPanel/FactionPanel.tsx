@@ -101,7 +101,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
         />
         <h3>Descriptors</h3>
         <TextField
-          label="Physical"
+          label="Description"
           multiline
           rows={2}
           defaultValue={props.faction?.description}

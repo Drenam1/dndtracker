@@ -95,16 +95,22 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    const saveToLocalCache = () => {
+    const saveToLocalCacheAuto = () => {
       localStorage.setItem("dndtracker-npcs", JSON.stringify(npcs));
       localStorage.setItem("dndtracker-factions", JSON.stringify(factions));
       localStorage.setItem("dndtracker-locations", JSON.stringify(locations));
     };
 
-    const interval = setInterval(saveToLocalCache, 5 * 60 * 1000); // 5 minutes
+    const interval = setInterval(saveToLocalCacheAuto, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
   }, [npcs, factions, locations]);
+
+  const saveToLocalCacheManual = () => {
+    localStorage.setItem("dndtracker-npcs", JSON.stringify(npcs));
+    localStorage.setItem("dndtracker-factions", JSON.stringify(factions));
+    localStorage.setItem("dndtracker-locations", JSON.stringify(locations));
+  };
 
   const saveNpc = (npc: Npc) => {
     if (npcs.find((existingNpc) => existingNpc.id === npc.id) !== undefined) {
@@ -206,9 +212,17 @@ function App() {
             })
           }
         />
+        <button
+          id="saveToLocalCache"
+          onClick={() => {
+            saveToLocalCacheManual();
+          }}
+        >
+          Save to local cache
+        </button>
         <p style={{ margin: "unset" }}>
-          The saved data will save to the cache at 5-minute intervals to reduce
-          the chance of loss of data.
+          The saved data will automatically save to the cache at 5-minute intervals to reduce
+          the chance of loss of data. You should still save to a file regularly.
         </p>
       </div>
       <div id="containerContainer">
