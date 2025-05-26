@@ -49,7 +49,12 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
                   ?.map((location) => {
                     return location.name?.toLowerCase();
                   })
-                  .includes(value)
+                  .some((str) => str?.includes(value)) ||
+                npc.factions
+                  ?.map((faction) => {
+                    return faction.name?.toLowerCase();
+                  })
+                  .some((str) => str?.includes(value))
             );
             setFilteredNpcs(filteredNpcs);
           }}
@@ -60,6 +65,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
             <tr>
               <th style={{ minWidth: "200px" }}>Name</th>
               <th style={{ minWidth: "200px" }}>Associated Locations</th>
+              <th style={{ minWidth: "200px" }}>Associated Factions</th>
             </tr>
           </thead>
           <tbody>
@@ -91,6 +97,20 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
                         ?.map((location) => {
                           return props.locations.find(
                             (loc) => loc.id === location.id
+                          )?.name;
+                        })
+                        .join(", ")}
+                    </td>
+                    <td
+                      onClick={() => {
+                        setSelectedNpc(npc);
+                        setPanelOpen(true);
+                      }}
+                    >
+                      {npc?.factions
+                        ?.map((faction) => {
+                          return props.factions.find(
+                            (loc) => loc.id === faction.id
                           )?.name;
                         })
                         .join(", ")}

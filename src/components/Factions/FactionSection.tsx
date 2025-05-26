@@ -43,8 +43,14 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
           placeholder="Filter Factions..."
           onChange={(e) => {
             const value = e.target.value.toLowerCase();
-            const filteredFactions = props.factions.filter((faction) =>
-              faction.name?.toLowerCase().includes(value)
+            const filteredFactions = props.factions.filter(
+              (faction) =>
+                faction.name?.toLowerCase().includes(value) ||
+                faction.locations
+                  ?.map((location) => {
+                    return location.name?.toLowerCase();
+                  })
+                  .some((str) => str?.includes(value))
             );
             setFilteredFactions(filteredFactions);
           }}
