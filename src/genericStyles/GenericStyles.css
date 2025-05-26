@@ -28,3 +28,7 @@
 .filterInput {
   width: 192px;
 }
+.panelFooter {
+  gap: 10px;
+  display: flex;
+}

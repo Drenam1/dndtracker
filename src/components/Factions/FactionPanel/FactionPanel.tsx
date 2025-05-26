@@ -4,10 +4,10 @@ import {
   Panel,
   PanelType,
   PrimaryButton,
+  DefaultButton,
   Slider,
   TextField,
 } from "@fluentui/react";
-import { Npc } from "../../../models/Npc";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
 import { Faction } from "../../../models/Faction";
 import { Location } from "../../../models/Location";
@@ -16,12 +16,11 @@ import ClockControl from "../../controls/ClockControl/ClockControl";
 
 export interface IFactionPanelProps {
   faction?: Faction;
-  npcs: Npc[];
   locations: Location[];
-  factions: Faction[];
   isOpen: boolean;
   onDismiss?: any;
   saveFaction?: (faction: Faction) => void;
+  deleteFaction?: (faction: Faction) => void;
 }
 
 const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
@@ -57,15 +56,28 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
       isBlocking={true}
       type={PanelType.medium}
       onRenderFooterContent={() => (
-        <PrimaryButton
-          text="Save"
-          onClick={() => {
-            if (props.saveFaction && currentFaction) {
-              props.saveFaction(currentFaction);
-              props.onDismiss();
-            }
-          }}
-        />
+        <div className="panelFooter">
+          <PrimaryButton
+            text="Save"
+            onClick={() => {
+              if (props.saveFaction && currentFaction) {
+                props.saveFaction(currentFaction);
+                props.onDismiss();
+              }
+            }}
+          />
+          {props.faction && (
+            <DefaultButton
+              text="Delete"
+              onClick={() => {
+                if (props.deleteFaction && props.faction) {
+                  props.deleteFaction(props.faction);
+                  props.onDismiss();
+                }
+              }}
+            />
+          )}
+        </div>
       )}
     >
       <div className="control">
@@ -170,7 +182,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
         <h3>Relationships</h3>
 
         <LocationControl
-        defaultValue={currentFaction?.locations}
+          defaultValue={currentFaction?.locations}
           allLocations={props.locations}
           onSave={(locations: Location[]) => {
             if (currentFaction) {

@@ -11,6 +11,7 @@ export interface INpcSectionProps {
   factions: Faction[];
   locations: Location[];
   saveNpc: (npc: Npc) => void;
+  deleteNpc?: (npc: Npc) => void;
 }
 
 const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
@@ -110,6 +111,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
             setSelectedNpc(undefined);
           }}
           saveNpc={props.saveNpc}
+          deleteNpc={props.deleteNpc}
         />
       ) : null}
     </div>

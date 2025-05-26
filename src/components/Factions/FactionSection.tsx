@@ -10,6 +10,7 @@ export interface IFactionSectionProps {
   factions: Faction[];
   locations: Location[];
   saveFaction: (faction: Faction) => void;
+  deleteFaction?: (faction: Faction) => void;
 }
 
 const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
@@ -96,15 +97,14 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
       {panelOpen ? (
         <FactionPanel
           faction={selectedFaction}
-          factions={props.factions}
           locations={props.locations}
-          npcs={props.npcs}
           isOpen={panelOpen}
           onDismiss={() => {
             setPanelOpen(false);
             setSelectedFaction(undefined);
           }}
           saveFaction={props.saveFaction}
+          deleteFaction={props.deleteFaction}
         />
       ) : null}
     </div>

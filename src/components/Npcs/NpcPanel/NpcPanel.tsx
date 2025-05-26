@@ -1,6 +1,12 @@
 import React from "react";
 import "./NpcPanel.css";
-import { Panel, PanelType, PrimaryButton, TextField } from "@fluentui/react";
+import {
+  DefaultButton,
+  Panel,
+  PanelType,
+  PrimaryButton,
+  TextField,
+} from "@fluentui/react";
 import { Npc, Relationship } from "../../../models/Npc";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
 import { Faction } from "../../../models/Faction";
@@ -18,6 +24,7 @@ export interface INpcPanelProps {
   isOpen: boolean;
   onDismiss?: any;
   saveNpc?: (npc: Npc) => void;
+  deleteNpc?: (npc: Npc) => void;
 }
 
 const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
@@ -55,15 +62,28 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       isBlocking={true}
       type={PanelType.medium}
       onRenderFooterContent={() => (
-        <PrimaryButton
-          text="Save"
-          onClick={() => {
-            if (props.saveNpc && currentNpc) {
-              props.saveNpc(currentNpc);
-              props.onDismiss();
-            }
-          }}
-        />
+        <div className="panelFooter">
+          <PrimaryButton
+            text="Save"
+            onClick={() => {
+              if (props.saveNpc && currentNpc) {
+                props.saveNpc(currentNpc);
+                props.onDismiss();
+              }
+            }}
+          />
+          {props.npc && (
+            <DefaultButton
+              text="Delete"
+              onClick={() => {
+                if (props.deleteNpc && props.npc) {
+                  props.deleteNpc(props.npc);
+                  props.onDismiss();
+                }
+              }}
+            />
+          )}
+        </div>
       )}
     >
       <div className="control">

@@ -118,6 +118,23 @@ function App() {
     }
   };
 
+  const deleteNpc = (npc: Npc) => {
+    if (npcs.find((existingNpc) => existingNpc.id === npc.id) !== undefined) {
+      let updatedNpcs = npcs.filter((existingNpc) => existingNpc.id !== npc.id);
+
+      // Remove the NPC from any relationships they were part of
+      updatedNpcs = updatedNpcs.map((existingNpc) => {
+        return {
+          ...existingNpc,
+          relationships: existingNpc.relationships?.filter(
+            (relationship) => relationship.person.id !== npc.id
+          ),
+        };
+      });
+      setNpcs(updatedNpcs);
+    }
+  };
+
   const saveFaction = (faction: Faction) => {
     if (
       factions.find((existingfaction) => existingfaction.id === faction.id) !==
@@ -129,6 +146,28 @@ function App() {
       setFactions(updatedFactions);
     } else if (faction.name && faction.name.trim() !== "") {
       const updatedFactions = [...factions, faction];
+      setFactions(updatedFactions);
+    }
+  };
+  const deleteFaction = (faction: Faction) => {
+    if (
+      factions.find((existingFaction) => existingFaction.id === faction.id) !==
+      undefined
+    ) {
+      let updatedFactions = factions.filter(
+        (existingFaction) => existingFaction.id !== faction.id
+      );
+
+      // Remove the faction from any NPCs
+      const updatedNpcs = npcs.map((existingNpc) => {
+        return {
+          ...existingNpc,
+          factions: existingNpc.factions?.filter(
+            (currentFaction) => currentFaction.id !== faction.id
+          ),
+        };
+      });
+      setNpcs(updatedNpcs);
       setFactions(updatedFactions);
     }
   };
@@ -178,12 +217,14 @@ function App() {
           factions={factions}
           locations={locations}
           saveNpc={saveNpc}
+          deleteNpc={deleteNpc}
         />
         <FactionSection
           npcs={npcs}
           factions={factions}
           locations={locations}
           saveFaction={saveFaction}
+          deleteFaction={deleteFaction}
         />
       </div>
     </div>
