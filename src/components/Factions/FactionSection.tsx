@@ -1,35 +1,36 @@
-import { DefaultButton } from "@fluentui/react";
-import { Npc } from "../../models/Npc";
-import React from "react";
-import NpcPanel from "./NpcPanel/NpcPanel";
 import { Faction } from "../../models/Faction";
+import { Npc } from "../../models/Npc";
 import { Location } from "../../models/Location";
-import "./NpcSectionStyles.css";
+import React from "react";
+import { DefaultButton } from "@fluentui/react";
+import FactionPanel from "./FactionPanel/FactionPanel";
 
-export interface INpcSectionProps {
+export interface IFactionSectionProps {
   npcs: Npc[];
   factions: Faction[];
   locations: Location[];
-  saveNpc: (npc: Npc) => void;
+  saveFaction: (faction: Faction) => void;
 }
 
-const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
+const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
+  props
+) => {
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
-  const [selectedNpc, setSelectedNpc] = React.useState<Npc | undefined>(
-    undefined
-  );
-  const [filteredNpcs, setFilteredNpcs] = React.useState<Npc[] | []>(
-    props.npcs
-  );
+  const [selectedFaction, setSelectedFaction] = React.useState<
+    Faction | undefined
+  >(undefined);
+  const [filteredFactions, setFilteredFactions] = React.useState<
+    Faction[] | []
+  >(props.factions);
 
   React.useEffect(() => {
-    setFilteredNpcs(props.npcs);
-  }, [props.npcs]);
+    setFilteredFactions(props.factions);
+  }, [props.factions]);
 
   return (
-    <div className="npcSection">
+    <div className="npcSection section">
       <DefaultButton
-        text="Create New NPC"
+        text="Create New Faction"
         className="createNewItemButton"
         onClick={() => {
           setPanelOpen(true);
@@ -38,19 +39,13 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
       <div>
         <input
           type="text"
-          placeholder="Filter NPCs..."
+          placeholder="Filter Factions..."
           onChange={(e) => {
             const value = e.target.value.toLowerCase();
-            const filteredNpcs = props.npcs.filter(
-              (npc) =>
-                npc.name?.toLowerCase().includes(value) ||
-                npc.locations
-                  ?.map((location) => {
-                    return location.name?.toLowerCase();
-                  })
-                  .includes(value)
+            const filteredFactions = props.factions.filter((faction) =>
+              faction.name?.toLowerCase().includes(value)
             );
-            setFilteredNpcs(filteredNpcs);
+            setFilteredFactions(filteredFactions);
           }}
           className="filterInput"
         />
@@ -62,31 +57,31 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
             </tr>
           </thead>
           <tbody>
-            {filteredNpcs
+            {filteredFactions
               .slice()
               .sort((a, b) => {
                 const nameA = a.name ?? "";
                 const nameB = b.name ?? "";
                 return nameA.localeCompare(nameB);
               })
-              .map((npc: Npc) => {
+              .map((faction: Faction) => {
                 return (
-                  <tr key={npc.id} style={{ cursor: "pointer" }}>
+                  <tr key={faction.id} style={{ cursor: "pointer" }}>
                     <td
                       onClick={() => {
-                        setSelectedNpc(npc);
+                        setSelectedFaction(faction);
                         setPanelOpen(true);
                       }}
                     >
-                      {npc.name}
+                      {faction.name}
                     </td>
                     <td
                       onClick={() => {
-                        setSelectedNpc(npc);
+                        setSelectedFaction(faction);
                         setPanelOpen(true);
                       }}
                     >
-                      {npc?.locations
+                      {faction?.locations
                         ?.map((location) => {
                           return location.name;
                         })
@@ -99,20 +94,21 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
         </table>
       </div>
       {panelOpen ? (
-        <NpcPanel
-          npc={selectedNpc}
+        <FactionPanel
+          faction={selectedFaction}
           factions={props.factions}
           locations={props.locations}
           npcs={props.npcs}
           isOpen={panelOpen}
           onDismiss={() => {
             setPanelOpen(false);
-            setSelectedNpc(undefined);
+            setSelectedFaction(undefined);
           }}
-          saveNpc={props.saveNpc}
+          saveFaction={props.saveFaction}
         />
       ) : null}
     </div>
   );
 };
-export default NpcSection;
+
+export default FactionSection;

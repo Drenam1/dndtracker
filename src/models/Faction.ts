@@ -4,12 +4,12 @@ import { Npc } from "./Npc";
 
 export interface Faction {
   id: string;
-  name: string;
+  name?: string;
   description?: string;
   locations?: Location[];
   tier?: number;
-  goals?: string;
   ideaology?: string;
   members?: Npc[];
   clocks?: Clock[];
+  additionalNotes?: string;
 }

@@ -30,7 +30,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       personality: "",
       clocks: [],
       relationships: [],
-      location: undefined,
+      locations: [],
       factions: [],
       combatTactics: "",
       socialTactics: "",
@@ -183,19 +183,19 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           }}
         />
         <LocationControl
-          npc={currentNpc}
+          defaultValue={currentNpc?.locations}
           allLocations={props.locations}
-          onSave={(location: Location) => {
+          onSave={(locations: Location[]) => {
             if (currentNpc) {
               const updatedNpc = {
                 ...currentNpc,
-                location: location,
+                locations: locations,
               };
               setCurrentNpc(updatedNpc);
             } else {
               setCurrentNpc({
                 id: generate_uuidv4(),
-                location: location,
+                locations: locations,
               });
             }
           }}

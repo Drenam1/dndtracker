@@ -10,18 +10,10 @@
   flex-direction: row;
   align-items: left;
   gap: 10px;
-  .content {
+  > div {
     min-width: 50%;
     max-height: 800px;
     overflow-y: auto;
-  }
-}
-.generatedItemContainer {
-  position: relative;
-  > button {
-    position: absolute;
-    top: 30px;
-    right: 30px;
   }
 }
 

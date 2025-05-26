@@ -22,3 +22,9 @@
     border-bottom: 1px solid #ccc;
   }
 }
+.createNewItemButton {
+  width: 200px;
+}
+.filterInput {
+  width: 192px;
+}

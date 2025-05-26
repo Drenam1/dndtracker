@@ -1,22 +1,20 @@
 import React from "react";
 import { Location } from "../../../models/Location";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
-import { Npc } from "../../../models/Npc";
 import "../../../genericStyles/GenericStyles.css";
 
 export interface ILocationControlProps {
-  npc?: Npc;
+  defaultValue?: Location[];
   allLocations?: Location[];
-  onSave?: (location: Location) => void;
+  onSave?: (locations: Location[]) => void;
 }
 
 const LocationControl: React.FunctionComponent<ILocationControlProps> = (
   props
 ) => {
-  const [selectedLocation, setSelectedLocation] = React.useState<
-    Location | undefined
-  >(props.npc?.location);
-
+  const [locations, setLocations] = React.useState<Location[]>(
+    props.defaultValue || []
+  );
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="location-control">
@@ -25,7 +23,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
         text={"Manage locations"}
         onClick={() => setPanelOpen(true)}
       />
-      {selectedLocation ? (
+      {props.defaultValue && props.defaultValue.length > 0 ? (
         <table className="location-table controlTable">
           <thead>
             <tr>
@@ -34,59 +32,82 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
             </tr>
           </thead>
           <tbody>
-            <tr key={selectedLocation.id}>
-              <td>{selectedLocation.name}</td>
-              <td>{selectedLocation.description}</td>
-            </tr>
+            {props.defaultValue.map((location) => (
+              <tr key={location.id}>
+                <td>{location.name}</td>
+                <td>{location.description}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       ) : (
-        <div>No location selected.</div>
+        <div>No locations selected.</div>
       )}
       {panelOpen && (
         <Panel
           isOpen={panelOpen}
           onDismiss={() => {
-            setSelectedLocation(props.npc?.location);
+            setLocations(props.defaultValue || []);
             setPanelOpen(false);
           }}
           isLightDismiss={true}
           isBlocking={true}
           type={PanelType.smallFixedFar}
         >
-          {props.allLocations && props.allLocations.length > 0 ? (
-            <div>
-              <h3>Select a location</h3>
-              <form>
-                {props.allLocations.map((location) => (
-                  <div key={location.id}>
-                    <label>
-                      <input
-                        type="radio"
-                        name="location"
-                        value={location.id}
-                        checked={selectedLocation?.id === location.id}
-                        onChange={() => setSelectedLocation(location)}
-                      />
-                      {location.name}
-                    </label>
-                  </div>
-                ))}
-              </form>
-              <PrimaryButton
-                text="Save"
-                onClick={() => {
-                  if (props.onSave && selectedLocation) {
-                    props.onSave(selectedLocation);
-                  }
-                  setPanelOpen(false);
-                }}
-                style={{ marginTop: 16 }}
-              />
-            </div>
-          ) : (
-            <div>No locations available.</div>
-          )}
+          <div>
+            <h3>Select a Location</h3>
+            {props.allLocations && props.allLocations.length > 0 ? (
+              <div>
+                <form>
+                  {props.allLocations.map((location) => (
+                    <div key={location.id} style={{ marginBottom: 8 }}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="location"
+                          value={location.id}
+                          checked={locations.some((l) => l.id === location.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setLocations([...locations, location]);
+                            } else {
+                              setLocations(
+                                locations.filter((l) => l.id !== location.id)
+                              );
+                            }
+                          }}
+                        />
+                        {location.name}
+                      </label>
+                    </div>
+                  ))}
+                </form>
+                <PrimaryButton
+                  text="Save"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      const checked = Array.from(
+                        document.querySelectorAll(
+                          'input[name="location"]:checked'
+                        )
+                      ).map((el) => (el as HTMLInputElement).value);
+                      const selectedLocations = props.allLocations?.filter(
+                        (location) => checked.includes(location.id)
+                      );
+                      setLocations(selectedLocations || []);
+                    }
+                    if (props.onSave) {
+                      props.onSave(locations);
+                    }
+                    setPanelOpen(false);
+                  }}
+                  style={{ marginTop: 16 }}
+                />
+              </div>
+            ) : (
+              <div>No locations available.</div>
+            )}
+          </div>
         </Panel>
       )}
     </div>

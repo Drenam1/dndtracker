@@ -6,6 +6,7 @@ import { Faction } from "./models/Faction";
 import { Location } from "./models/Location";
 import { Npc } from "./models/Npc";
 import NpcSection from "./components/Npcs/NpcSection";
+import FactionSection from "./components/Factions/FactionSection";
 
 initializeIcons();
 //To compile, run npm start
@@ -33,7 +34,7 @@ function App() {
       name: "Winthrop von Kessel",
       physicalDescription: "A big armored imperial.",
       factions: [],
-      location: undefined,
+      locations: [],
       clocks: [
         {
           id: "d1e2f3g4-h5i6-j7k8-l9m0-n1o2p3q4r5s6",
@@ -49,7 +50,7 @@ function App() {
       name: "Aurelius Feldwin",
       physicalDescription: "An elven mage.",
       factions: [],
-      location: undefined,
+      locations: [],
     },
   ]);
   const [locations, setLocations] = React.useState<Location[]>([
@@ -117,6 +118,21 @@ function App() {
     }
   };
 
+  const saveFaction = (faction: Faction) => {
+    if (
+      factions.find((existingfaction) => existingfaction.id === faction.id) !==
+      undefined
+    ) {
+      const updatedFactions = factions.map((existingFaction) =>
+        existingFaction.id === faction.id ? faction : existingFaction
+      );
+      setFactions(updatedFactions);
+    } else if (faction.name && faction.name.trim() !== "") {
+      const updatedFactions = [...factions, faction];
+      setFactions(updatedFactions);
+    }
+  };
+
   return (
     <div className="App">
       <div id="saveLoadContainer">
@@ -162,6 +178,12 @@ function App() {
           factions={factions}
           locations={locations}
           saveNpc={saveNpc}
+        />
+        <FactionSection
+          npcs={npcs}
+          factions={factions}
+          locations={locations}
+          saveFaction={saveFaction}
         />
       </div>
     </div>

@@ -11,7 +11,7 @@ export interface Npc {
   name?: string;
   physicalDescription?: string;
   voiceNotes?: string;
-  location?: Location;
+  locations?: Location[];
   personality?: string;
   relationships?: Relationship[];
   factions?: Faction[];
