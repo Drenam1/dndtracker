@@ -28,6 +28,25 @@ const LocationSection: React.FunctionComponent<ILocationSectionProps> = (
     setFilteredLocations(props.locations);
   }, [props.locations]);
 
+  const getAllAssociatedFactions = (location: Location) => {
+    const allLocations: Location[] = [];
+    const traverse = (loc: Location) => {
+      const children = props.locations.filter(
+        (l) => l.greaterLocation && l.greaterLocation.id === loc.id
+      );
+      allLocations.push(...children);
+      children.forEach(traverse);
+    };
+    traverse(location);
+    allLocations.push(location);
+
+    return props.factions.filter((faction) =>
+      faction.locations?.some((loc) =>
+        allLocations.some((l) => l.id === loc.id)
+      )
+    );
+  };
+
   return (
     <div className="npcSection section">
       <DefaultButton
@@ -82,14 +101,7 @@ const LocationSection: React.FunctionComponent<ILocationSectionProps> = (
                         setPanelOpen(true);
                       }}
                     >
-                      {props.factions
-                        .filter(
-                          (faction: Faction) =>
-                            Array.isArray(faction.locations) &&
-                            faction.locations
-                              .map((location: Location) => location.id)
-                              .includes(location?.id)
-                        )
+                      {getAllAssociatedFactions(location)
                         .map((faction: Faction) => faction.name)
                         .join(", ")}
                     </td>

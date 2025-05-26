@@ -48,6 +48,25 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
     }
   }, [props.location]);
 
+  const getAllAssociatedFactions = (location: Location) => {
+    const allLocations: Location[] = [];
+    const traverse = (loc: Location) => {
+      const children = props.locations.filter(
+        (l) => l.greaterLocation && l.greaterLocation.id === loc.id
+      );
+      allLocations.push(...children);
+      children.forEach(traverse);
+    };
+    traverse(location);
+    allLocations.push(location);
+
+    return props.factions?.filter((faction) =>
+      faction.locations?.some((loc) =>
+        allLocations.some((l) => l.id === loc.id)
+      )
+    );
+  };
+
   return (
     <Panel
       isOpen={props.isOpen}
@@ -139,16 +158,16 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
             if (currentLocation && option) {
               const updatedLocation = {
                 ...currentLocation,
-                greaterLocation: props.npcs?.find(
-                  (npc) => npc.id === option.key
+                greaterLocation: props.locations?.find(
+                  (location) => location.id === option.key
                 ),
               };
               setCurrentLocation(updatedLocation);
             } else {
               setCurrentLocation({
                 id: generate_uuidv4(),
-                greaterLocation: props.npcs?.find(
-                  (npc) => npc.id === option?.key
+                greaterLocation: props.locations?.find(
+                  (location) => location.id === option?.key
                 ),
               });
             }
@@ -253,17 +272,11 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           <div className="factionList">
             <h4>Factions in this Location</h4>
             <ul>
-              {props.factions
-                .filter(
-                  (faction: Faction) =>
-                    Array.isArray(faction.locations) &&
-                    faction.locations
-                      .map((location: Location) => location.id)
-                      .includes(currentLocation?.id)
-                )
-                .map((faction: any) => (
+              {getAllAssociatedFactions(currentLocation)?.map(
+                (faction: any) => (
                   <li key={faction.id}>{faction.name}</li>
-                ))}
+                )
+              )}
             </ul>
           </div>
         )}
