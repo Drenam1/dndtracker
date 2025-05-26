@@ -160,11 +160,17 @@ const RelationshipControl: React.FunctionComponent<
                 <option value="" disabled>
                   Add NPC...
                 </option>
-                {props.allNpcs?.map((npc) => (
-                  <option key={npc.id} value={npc.id}>
-                    {npc.name}
-                  </option>
-                ))}
+                {props.allNpcs
+                  ?.sort((a, b) => {
+                    const nameA = a.name ?? "";
+                    const nameB = b.name ?? "";
+                    return nameA.localeCompare(nameB);
+                  })
+                  ?.map((npc) => (
+                    <option key={npc.id} value={npc.id}>
+                      {npc.name}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>

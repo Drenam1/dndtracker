@@ -69,28 +69,34 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
             {props.allFactions && props.allFactions.length > 0 ? (
               <div>
                 <form>
-                  {props.allFactions.map((faction) => (
-                    <div key={faction.id} style={{ marginBottom: 8 }}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="faction"
-                          value={faction.id}
-                          checked={factions.some((f) => f.id === faction.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setFactions([...factions, faction]);
-                            } else {
-                              setFactions(
-                                factions.filter((f) => f.id !== faction.id)
-                              );
-                            }
-                          }}
-                        />
-                        {faction.name}
-                      </label>
-                    </div>
-                  ))}
+                  {props.allFactions
+                    ?.sort((a, b) => {
+                      const nameA = a.name ?? "";
+                      const nameB = b.name ?? "";
+                      return nameA.localeCompare(nameB);
+                    })
+                    .map((faction) => (
+                      <div key={faction.id} style={{ marginBottom: 8 }}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="faction"
+                            value={faction.id}
+                            checked={factions.some((f) => f.id === faction.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFactions([...factions, faction]);
+                              } else {
+                                setFactions(
+                                  factions.filter((f) => f.id !== faction.id)
+                                );
+                              }
+                            }}
+                          />
+                          {faction.name}
+                        </label>
+                      </div>
+                    ))}
                 </form>
                 <PrimaryButton
                   text="Save"

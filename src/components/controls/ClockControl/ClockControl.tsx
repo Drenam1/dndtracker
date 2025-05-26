@@ -7,6 +7,7 @@ import "../../../genericStyles/GenericStyles.css";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
 
 export interface IClockControlProps {
+  label?: string;
   defaultValue?: Clock[];
   onSave?: (clocks: Clock[]) => void;
 }
@@ -16,7 +17,7 @@ const ClockControl: React.FunctionComponent<IClockControlProps> = (props) => {
   const [clocks, setClocks] = React.useState<Clock[]>(props.defaultValue || []);
   return (
     <div className="clock-control">
-      <h3 className="formTitle">Goals</h3>
+      <h3 className="formTitle">{props.label || "Clocks"}</h3>
       <PrimaryButton
         text={"Manage clocks"}
         onClick={() => setPanelOpen(true)}

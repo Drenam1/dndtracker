@@ -37,30 +37,30 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
           setPanelOpen(true);
         }}
       />
+      <input
+        type="text"
+        placeholder="Filter Factions..."
+        onChange={(e) => {
+          const value = e.target.value.toLowerCase();
+          const filteredFactions = props.factions.filter(
+            (faction) =>
+              faction.name?.toLowerCase().includes(value) ||
+              faction.locations
+                ?.map((location) => {
+                  return location.name?.toLowerCase();
+                })
+                .some((str) => str?.includes(value))
+          );
+          setFilteredFactions(filteredFactions);
+        }}
+        className="filterInput"
+      />
       <div>
-        <input
-          type="text"
-          placeholder="Filter Factions..."
-          onChange={(e) => {
-            const value = e.target.value.toLowerCase();
-            const filteredFactions = props.factions.filter(
-              (faction) =>
-                faction.name?.toLowerCase().includes(value) ||
-                faction.locations
-                  ?.map((location) => {
-                    return location.name?.toLowerCase();
-                  })
-                  .some((str) => str?.includes(value))
-            );
-            setFilteredFactions(filteredFactions);
-          }}
-          className="filterInput"
-        />
         <table>
           <thead>
             <tr>
-              <th style={{ minWidth: "200px" }}>Name</th>
-              <th style={{ minWidth: "200px" }}>Associated Locations</th>
+              <th>Name</th>
+              <th>Associated Locations</th>
             </tr>
           </thead>
           <tbody>

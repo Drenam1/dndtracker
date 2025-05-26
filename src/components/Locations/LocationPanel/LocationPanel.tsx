@@ -11,7 +11,6 @@ import {
 } from "@fluentui/react";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
 import { Location } from "../../../models/Location";
-import LocationControl from "../../controls/LocationControl/LocationControl";
 import ClockControl from "../../controls/ClockControl/ClockControl";
 import { Npc } from "../../../models/Npc";
 import { Faction } from "../../../models/Faction";
@@ -64,6 +63,22 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
       faction.locations?.some((loc) =>
         allLocations.some((l) => l.id === loc.id)
       )
+    );
+  };
+  const getAllAssociatedNpcs = (location: Location) => {
+    const allLocations: Location[] = [];
+    const traverse = (loc: Location) => {
+      const children = props.locations.filter(
+        (l) => l.greaterLocation && l.greaterLocation.id === loc.id
+      );
+      allLocations.push(...children);
+      children.forEach(traverse);
+    };
+    traverse(location);
+    allLocations.push(location);
+
+    return props.npcs?.filter((npc) =>
+      npc.locations?.some((loc) => allLocations.some((l) => l.id === loc.id))
     );
   };
 
@@ -174,6 +189,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           }}
         />
         <ClockControl
+          label="Clocks"
           defaultValue={props.location?.clocks}
           onSave={(clocks) => {
             if (currentLocation) {
@@ -224,24 +240,6 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           }}
         />
 
-        {props.npcs && Array.isArray(props.npcs) && currentLocation?.id && (
-          <div className="npcList">
-            <h4>NPCs in this Location</h4>
-            <ul>
-              {props.npcs
-                .filter(
-                  (npc: any) =>
-                    Array.isArray(npc.locations) &&
-                    npc.locations
-                      .map((location: Location) => location.id)
-                      .includes(currentLocation?.id)
-                )
-                .map((npc: any) => (
-                  <li key={npc.id}>{npc.name}</li>
-                ))}
-            </ul>
-          </div>
-        )}
         <Slider
           label="Population"
           defaultValue={currentLocation?.population ?? 0}
@@ -265,21 +263,6 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           }}
         />
       </div>
-
-      {props.factions &&
-        Array.isArray(props.factions) &&
-        currentLocation?.id && (
-          <div className="factionList">
-            <h4>Factions in this Location</h4>
-            <ul>
-              {getAllAssociatedFactions(currentLocation)?.map(
-                (faction: any) => (
-                  <li key={faction.id}>{faction.name}</li>
-                )
-              )}
-            </ul>
-          </div>
-        )}
       <TextField
         label="Additional Notes"
         multiline
@@ -300,6 +283,36 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           }
         }}
       />
+      {props.factions &&
+        Array.isArray(props.factions) &&
+        currentLocation?.id && (
+          <div className="factionList">
+            <h4>Factions in this Location</h4>
+            <ul>
+              {getAllAssociatedFactions(currentLocation)?.map(
+                (faction: any) => (
+                  <li key={faction.id}>{faction.name}</li>
+                )
+              )}
+            </ul>
+          </div>
+        )}
+      {props.npcs && Array.isArray(props.npcs) && currentLocation?.id && (
+        <div className="npcList">
+          <h4>NPCs in this Location</h4>
+          <ul>
+            {getAllAssociatedNpcs(currentLocation)
+              ?.sort((a, b) => {
+                const nameA = a.name ?? "";
+                const nameB = b.name ?? "";
+                return nameA.localeCompare(nameB);
+              })
+              ?.map((npc: any) => (
+                <li key={npc.id}>{npc.name}</li>
+              ))}
+          </ul>
+        </div>
+      )}
     </Panel>
   );
 };

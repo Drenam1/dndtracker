@@ -69,28 +69,36 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
             {props.allLocations && props.allLocations.length > 0 ? (
               <div>
                 <form>
-                  {props.allLocations.map((location) => (
-                    <div key={location.id} style={{ marginBottom: 8 }}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="location"
-                          value={location.id}
-                          checked={locations.some((l) => l.id === location.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setLocations([...locations, location]);
-                            } else {
-                              setLocations(
-                                locations.filter((l) => l.id !== location.id)
-                              );
-                            }
-                          }}
-                        />
-                        {location.name}
-                      </label>
-                    </div>
-                  ))}
+                  {props.allLocations
+                    ?.sort((a, b) => {
+                      const nameA = a.name ?? "";
+                      const nameB = b.name ?? "";
+                      return nameA.localeCompare(nameB);
+                    })
+                    .map((location) => (
+                      <div key={location.id} style={{ marginBottom: 8 }}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value={location.id}
+                            checked={locations.some(
+                              (l) => l.id === location.id
+                            )}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setLocations([...locations, location]);
+                              } else {
+                                setLocations(
+                                  locations.filter((l) => l.id !== location.id)
+                                );
+                              }
+                            }}
+                          />
+                          {location.name}
+                        </label>
+                      </div>
+                    ))}
                 </form>
                 <PrimaryButton
                   text="Save"

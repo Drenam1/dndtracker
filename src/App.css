@@ -14,6 +14,17 @@
     width: 33%;
     max-height: 800px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid 1px lightgray;
+    padding: 5px 0px;
+    table {
+      th {
+        min-width: 180px;
+        text-align: left;
+      }
+    }
   }
 }
 

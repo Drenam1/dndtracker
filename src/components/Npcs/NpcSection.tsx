@@ -36,36 +36,36 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
           setPanelOpen(true);
         }}
       />
+      <input
+        type="text"
+        placeholder="Filter NPCs..."
+        onChange={(e) => {
+          const value = e.target.value.toLowerCase();
+          const filteredNpcs = props.npcs.filter(
+            (npc) =>
+              npc.name?.toLowerCase().includes(value) ||
+              npc.locations
+                ?.map((location) => {
+                  return location.name?.toLowerCase();
+                })
+                .some((str) => str?.includes(value)) ||
+              npc.factions
+                ?.map((faction) => {
+                  return faction.name?.toLowerCase();
+                })
+                .some((str) => str?.includes(value))
+          );
+          setFilteredNpcs(filteredNpcs);
+        }}
+        className="filterInput"
+      />
       <div>
-        <input
-          type="text"
-          placeholder="Filter NPCs..."
-          onChange={(e) => {
-            const value = e.target.value.toLowerCase();
-            const filteredNpcs = props.npcs.filter(
-              (npc) =>
-                npc.name?.toLowerCase().includes(value) ||
-                npc.locations
-                  ?.map((location) => {
-                    return location.name?.toLowerCase();
-                  })
-                  .some((str) => str?.includes(value)) ||
-                npc.factions
-                  ?.map((faction) => {
-                    return faction.name?.toLowerCase();
-                  })
-                  .some((str) => str?.includes(value))
-            );
-            setFilteredNpcs(filteredNpcs);
-          }}
-          className="filterInput"
-        />
         <table>
           <thead>
             <tr>
-              <th style={{ minWidth: "200px" }}>Name</th>
-              <th style={{ minWidth: "200px" }}>Associated Locations</th>
-              <th style={{ minWidth: "200px" }}>Associated Factions</th>
+              <th>Name</th>
+              <th>Associated Locations</th>
+              <th>Associated Factions</th>
             </tr>
           </thead>
           <tbody>

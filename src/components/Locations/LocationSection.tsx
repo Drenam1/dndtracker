@@ -56,24 +56,28 @@ const LocationSection: React.FunctionComponent<ILocationSectionProps> = (
           setPanelOpen(true);
         }}
       />
+      <input
+        type="text"
+        placeholder="Filter Locations..."
+        onChange={(e) => {
+          const value = e.target.value.toLowerCase();
+          const filteredLocations = props.locations.filter(
+            (location) =>
+              location.name?.toLowerCase().includes(value) ||
+              getAllAssociatedFactions(location).some((faction: Faction) =>
+                faction.name?.toLowerCase().includes(value)
+              )
+          );
+          setFilteredLocations(filteredLocations);
+        }}
+        className="filterInput"
+      />
       <div>
-        <input
-          type="text"
-          placeholder="Filter Locations..."
-          onChange={(e) => {
-            const value = e.target.value.toLowerCase();
-            const filteredLocations = props.locations.filter((location) =>
-              location.name?.toLowerCase().includes(value)
-            );
-            setFilteredLocations(filteredLocations);
-          }}
-          className="filterInput"
-        />
         <table>
           <thead>
             <tr>
-              <th style={{ minWidth: "200px" }}>Name</th>
-              <th style={{ minWidth: "200px" }}>Associated Factions</th>
+              <th>Name</th>
+              <th>Associated Factions</th>
             </tr>
           </thead>
           <tbody>

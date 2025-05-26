@@ -215,24 +215,6 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
           }}
         />
 
-        {props.npcs && Array.isArray(props.npcs) && currentFaction?.id && (
-          <div className="npcList">
-            <h4>NPCs in this Faction</h4>
-            <ul>
-              {props.npcs
-                .filter(
-                  (npc: any) =>
-                    Array.isArray(npc.factions) &&
-                    npc.factions
-                      .map((faction: Faction) => faction.id)
-                      .includes(currentFaction?.id)
-                )
-                .map((npc: any) => (
-                  <li key={npc.id}>{npc.name}</li>
-                ))}
-            </ul>
-          </div>
-        )}
         <LocationControl
           defaultValue={currentFaction?.locations}
           allLocations={props.locations}
@@ -272,6 +254,29 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
           }
         }}
       />
+      {props.npcs && Array.isArray(props.npcs) && currentFaction?.id && (
+        <div className="npcList">
+          <h4>NPCs in this Faction</h4>
+          <ul>
+            {props.npcs
+              .filter(
+                (npc: any) =>
+                  Array.isArray(npc.factions) &&
+                  npc.factions
+                    .map((faction: Faction) => faction.id)
+                    .includes(currentFaction?.id)
+              )
+              ?.sort((a, b) => {
+                const nameA = a.name ?? "";
+                const nameB = b.name ?? "";
+                return nameA.localeCompare(nameB);
+              })
+              .map((npc: any) => (
+                <li key={npc.id}>{npc.name}</li>
+              ))}
+          </ul>
+        </div>
+      )}
     </Panel>
   );
 };
