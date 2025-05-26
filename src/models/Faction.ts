@@ -9,6 +9,7 @@ export interface Faction {
   locations?: Location[];
   tier?: number;
   ideaology?: string;
+  leader?: Npc;
   members?: Npc[];
   clocks?: Clock[];
   additionalNotes?: string;
