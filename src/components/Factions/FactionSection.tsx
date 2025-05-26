@@ -84,7 +84,9 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
                     >
                       {faction?.locations
                         ?.map((location) => {
-                          return location.name;
+                          return props.locations.find(
+                            (loc) => loc.id === location.id
+                          )?.name;
                         })
                         .join(", ")}
                     </td>

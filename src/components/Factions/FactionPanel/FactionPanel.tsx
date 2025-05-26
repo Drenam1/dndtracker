@@ -188,7 +188,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
             if (currentFaction) {
               const updatedFaction = {
                 ...currentFaction,
-                location: locations,
+                locations: locations,
               };
               setCurrentFaction(updatedFaction);
             } else {

@@ -89,7 +89,9 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
                     >
                       {npc?.locations
                         ?.map((location) => {
-                          return location.name;
+                          return props.locations.find(
+                            (loc) => loc.id === location.id
+                          )?.name;
                         })
                         .join(", ")}
                     </td>
