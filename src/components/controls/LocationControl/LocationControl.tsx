@@ -15,6 +15,16 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
   const [locations, setLocations] = React.useState<Location[]>(
     props.defaultValue || []
   );
+
+  React.useEffect(() => {
+    if (props.defaultValue && props.allLocations) {
+      const selectedLocations = props.allLocations.filter((location) =>
+        props.defaultValue!.some((dl) => dl.id === location.id)
+      );
+      setLocations(selectedLocations);
+    }
+  }, [props.defaultValue, props.allLocations]);
+
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="location-control">
@@ -23,7 +33,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
         text={"Manage locations"}
         onClick={() => setPanelOpen(true)}
       />
-      {props.defaultValue && props.defaultValue.length > 0 ? (
+      {locations && locations.length > 0 ? (
         <table className="location-table controlTable">
           <thead>
             <tr>
@@ -32,7 +42,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
             </tr>
           </thead>
           <tbody>
-            {props.defaultValue.map((location) => (
+            {locations.map((location) => (
               <tr key={location.id}>
                 <td>{location.name}</td>
                 <td>{location.description}</td>

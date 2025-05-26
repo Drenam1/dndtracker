@@ -15,6 +15,16 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
   const [factions, setFactions] = React.useState<Faction[]>(
     props.defaultValue || []
   );
+
+  React.useEffect(() => {
+    if (props.defaultValue && props.allFactions) {
+      const selectedFactions = props.allFactions.filter((faction) =>
+        props.defaultValue!.some((df) => df.id === faction.id)
+      );
+      setFactions(selectedFactions);
+    }
+  }, [props.defaultValue, props.allFactions]);
+
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
   return (
     <div className="faction-control">
@@ -23,7 +33,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
         text={"Manage factions"}
         onClick={() => setPanelOpen(true)}
       />
-      {props.defaultValue && props.defaultValue.length > 0 ? (
+      {factions && factions.length > 0 ? (
         <table className="faction-table controlTable">
           <thead>
             <tr>
@@ -32,7 +42,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
             </tr>
           </thead>
           <tbody>
-            {props.defaultValue.map((faction) => (
+            {factions.map((faction) => (
               <tr key={faction.id}>
                 <td>{faction.name}</td>
                 <td>{faction.description}</td>

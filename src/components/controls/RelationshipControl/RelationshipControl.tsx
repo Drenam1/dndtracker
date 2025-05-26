@@ -18,6 +18,18 @@ const RelationshipControl: React.FunctionComponent<
   );
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
 
+  React.useEffect(() => {
+    const updatedRelationships = props.defaultValue?.map((relationship) => {
+      return {
+        ...relationship,
+        person:
+          props.allNpcs?.find((npc) => npc.id === relationship.person.id) ||
+          relationship.person,
+      };
+    });
+    setRelationships(updatedRelationships || []);
+  }, [props.defaultValue, props.allNpcs]);
+
   return (
     <div className="npc-control">
       <h3 className="formTitle">People</h3>
@@ -25,7 +37,7 @@ const RelationshipControl: React.FunctionComponent<
         text={"Manage relationships"}
         onClick={() => setPanelOpen(true)}
       />
-      {props.defaultValue && props.defaultValue.length > 0 ? (
+      {relationships && relationships.length > 0 ? (
         <div>
           <table className="controlTable">
             <thead>
