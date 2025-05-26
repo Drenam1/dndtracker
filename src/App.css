@@ -11,7 +11,7 @@
   align-items: left;
   gap: 10px;
   > div {
-    min-width: 50%;
+    width: 33%;
     max-height: 800px;
     overflow-y: auto;
   }

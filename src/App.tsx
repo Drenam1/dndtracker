@@ -7,6 +7,7 @@ import { Location } from "./models/Location";
 import { Npc } from "./models/Npc";
 import NpcSection from "./components/Npcs/NpcSection";
 import FactionSection from "./components/Factions/FactionSection";
+import LocationSection from "./components/Locations/LocationSection";
 
 initializeIcons();
 //To compile, run npm start
@@ -61,7 +62,6 @@ function App() {
         "Chorrol is a city in the Great Forest region in northwestern Cyrodiil, west of the Imperial City along the Black Road. The Orange Road connects the city to Bruma to the northeast. The city is near the Colovian Highlands along the Hammerfell border.",
       leadership: undefined,
       population: 5000,
-      factions: [],
     },
     {
       id: "q7r8s9t0-u1v2-w3x4-y5z6-a7b8c9d0e1f2",
@@ -70,7 +70,6 @@ function App() {
         "Cheydinhal is a city in the Nibenay Basin region in northeastern Cyrodiil, east of the Imperial City at the end of the Blue Road. The city is in the foothills of the Valus Mountains, with its architectural style influenced by the Dunmer due to its proximity to Morrowind.",
       leadership: undefined,
       population: 3000,
-      factions: [],
     },
   ]);
 
@@ -178,6 +177,56 @@ function App() {
     }
   };
 
+  const saveLocation = (location: Location) => {
+    if (
+      locations.find(
+        (existinglocation) => existinglocation.id === location.id
+      ) !== undefined
+    ) {
+      const updatedLocations = locations.map((existingLocation) =>
+        existingLocation.id === location.id ? location : existingLocation
+      );
+      setLocations(updatedLocations);
+    } else if (location.name && location.name.trim() !== "") {
+      const updatedLocations = [...locations, location];
+      setLocations(updatedLocations);
+    }
+  };
+  const deleteLocation = (location: Location) => {
+    if (
+      locations.find(
+        (existingLocation) => existingLocation.id === location.id
+      ) !== undefined
+    ) {
+      let updatedLocations = locations.filter(
+        (existingLocation) => existingLocation.id !== location.id
+      );
+
+      // Remove the location from any NPCs
+      const updatedNpcs = npcs.map((existingNpc) => {
+        return {
+          ...existingNpc,
+          locations: existingNpc.locations?.filter(
+            (currentLocation) => currentLocation.id !== location.id
+          ),
+        };
+      });
+
+      // Remove the location from any Factions
+      const updatedFactions = factions.map((existingFaction) => {
+        return {
+          ...existingFaction,
+          locations: existingFaction.locations?.filter(
+            (currentLocation) => currentLocation.id !== location.id
+          ),
+        };
+      });
+      setNpcs(updatedNpcs);
+      setFactions(updatedFactions);
+      setLocations(updatedLocations);
+    }
+  };
+
   return (
     <div className="App">
       <div id="saveLoadContainer">
@@ -221,8 +270,9 @@ function App() {
           Save to local cache
         </button>
         <p style={{ margin: "unset" }}>
-          The saved data will automatically save to the cache at 5-minute intervals to reduce
-          the chance of loss of data. You should still save to a file regularly.
+          The saved data will automatically save to the cache at 5-minute
+          intervals to reduce the chance of loss of data. You should still save
+          to a file regularly.
         </p>
       </div>
       <div id="containerContainer">
@@ -239,6 +289,13 @@ function App() {
           locations={locations}
           saveFaction={saveFaction}
           deleteFaction={deleteFaction}
+        />
+        <LocationSection
+          npcs={npcs}
+          factions={factions}
+          locations={locations}
+          saveLocation={saveLocation}
+          deleteLocation={deleteLocation}
         />
       </div>
     </div>
