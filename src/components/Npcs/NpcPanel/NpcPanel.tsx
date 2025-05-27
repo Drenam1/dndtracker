@@ -95,7 +95,8 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
                     "No additional notes provided.",
                   clocks: currentNpc?.clocks || [],
                   relationships:
-                    (currentNpc?.relationships?.length ?? 0) > 0
+                    (currentNpc?.relationships?.length ?? 0) > 0 ||
+                    props.npcs.length === 0
                       ? currentNpc?.relationships
                       : [
                           RandomizationHelper.randomizeRelationship(

@@ -39,7 +39,7 @@ const RelationshipControl: React.FunctionComponent<
 
   return (
     <div className="npc-control">
-      <h3 className="formTitle">People</h3>
+      <h3 className="formTitle">Characters</h3>
       {relationships && relationships.length > 0 ? (
         <div>
           <table className="controlTable">
