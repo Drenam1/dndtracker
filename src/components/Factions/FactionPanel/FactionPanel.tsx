@@ -22,6 +22,7 @@ export interface IFactionPanelProps {
   npcs?: Npc[]; // Assuming npcs is an array of NPC objects
   isOpen: boolean;
   onDismiss?: any;
+  disabled?: boolean;
   saveFaction?: (faction: Faction) => void;
   deleteFaction?: (faction: Faction) => void;
 }
@@ -60,25 +61,29 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
       type={PanelType.medium}
       onRenderFooterContent={() => (
         <div className="panelFooter">
-          <PrimaryButton
-            text="Save"
-            onClick={() => {
-              if (props.saveFaction && currentFaction) {
-                props.saveFaction(currentFaction);
-                props.onDismiss();
-              }
-            }}
-          />
-          {props.faction && (
-            <DefaultButton
-              text="Delete"
-              onClick={() => {
-                if (props.deleteFaction && props.faction) {
-                  props.deleteFaction(props.faction);
-                  props.onDismiss();
-                }
-              }}
-            />
+          {props.disabled ? null : (
+            <>
+              <PrimaryButton
+                text="Save"
+                onClick={() => {
+                  if (props.saveFaction && currentFaction) {
+                    props.saveFaction(currentFaction);
+                    props.onDismiss();
+                  }
+                }}
+              />
+              {props.faction && (
+                <DefaultButton
+                  text="Delete"
+                  onClick={() => {
+                    if (props.deleteFaction && props.faction) {
+                      props.deleteFaction(props.faction);
+                      props.onDismiss();
+                    }
+                  }}
+                />
+              )}
+            </>
           )}
         </div>
       )}
@@ -87,6 +92,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
         <TextField
           label="Name"
           defaultValue={props.faction?.name}
+          disabled={props.disabled}
           onChange={(event, newValue) => {
             if (currentFaction) {
               const updatedFaction = {
@@ -106,6 +112,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
           label="Description"
           multiline
           rows={2}
+          disabled={props.disabled}
           defaultValue={props.faction?.description}
           onChange={(event, newValue) => {
             if (currentFaction) {
@@ -128,6 +135,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
           min={1}
           max={5}
           step={1}
+          disabled={props.disabled}
           showValue={true}
           onChange={(newValue) => {
             if (currentFaction) {
@@ -148,6 +156,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
           label="Ideaology"
           multiline
           rows={2}
+          disabled={props.disabled}
           defaultValue={props.faction?.ideaology}
           onChange={(event, newValue) => {
             if (currentFaction) {
@@ -166,6 +175,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
         />
         <ClockControl
           defaultValue={props.faction?.clocks}
+          disabled={props.disabled}
           onSave={(clocks) => {
             if (currentFaction) {
               const updatedFaction = {
@@ -203,6 +213,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
                 text: npc.name ?? "",
               })) || []
           }
+          disabled={props.disabled}
           selectedKey={currentFaction?.leader?.id}
           onChange={(event, option) => {
             if (currentFaction && option) {
@@ -223,6 +234,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
         <LocationControl
           defaultValue={currentFaction?.locations}
           allLocations={props.locations}
+          disabled={props.disabled}
           onSave={(locations: Location[]) => {
             if (currentFaction) {
               const updatedFaction = {
@@ -243,6 +255,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
         label="Additional Notes"
         multiline
         rows={4}
+        disabled={props.disabled}
         defaultValue={props.faction?.additionalNotes}
         onChange={(event, newValue) => {
           if (currentFaction) {

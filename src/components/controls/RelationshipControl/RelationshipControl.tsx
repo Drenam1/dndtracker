@@ -3,10 +3,16 @@ import { Npc, Relationship } from "../../../models/Npc";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import "../../../genericStyles/GenericStyles.css";
 import { generate_uuidv4 } from "../../../helpers/RollHelper";
+import NpcPanel from "../../Npcs/NpcPanel/NpcPanel";
+import { Faction } from "../../../models/Faction";
+import { Location } from "../../../models/Location";
 
 export interface IRelationshipControlProps {
   defaultValue?: Relationship[];
   allNpcs?: Npc[];
+  allFactions?: Faction[];
+  allLocations?: Location[];
+  disabled?: boolean;
   onSave?: (relatonships: Relationship[]) => void;
 }
 
@@ -17,6 +23,7 @@ const RelationshipControl: React.FunctionComponent<
     props.defaultValue || []
   );
   const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
+  const [childElement, setChildElement] = React.useState<JSX.Element>();
 
   React.useEffect(() => {
     const updatedRelationships = props.defaultValue?.map((relationship) => {
@@ -29,7 +36,7 @@ const RelationshipControl: React.FunctionComponent<
     });
     setRelationships(updatedRelationships || []);
   }, [props.defaultValue, props.allNpcs]);
-
+  console.log(childElement);
   return (
     <div className="npc-control">
       <h3 className="formTitle">People</h3>
@@ -53,7 +60,28 @@ const RelationshipControl: React.FunctionComponent<
                 .map((relationship) => {
                   if (relationship.relationshipType?.length > 0) {
                     return (
-                      <tr key={generate_uuidv4()}>
+                      <tr
+                        key={generate_uuidv4()}
+                        onClick={() => {
+                          if (!props.disabled) {
+                            setChildElement(
+                              <NpcPanel
+                                npc={relationship.person}
+                                factions={props.allFactions ?? []}
+                                locations={props.allLocations ?? []}
+                                npcs={props.allNpcs ?? []}
+                                disabled={true}
+                                isOpen={true}
+                                onDismiss={() => {
+                                  setChildElement(undefined);
+                                }}
+                                saveNpc={undefined}
+                                deleteNpc={undefined}
+                              />
+                            );
+                          }
+                        }}
+                      >
                         <td>{relationship.person.name}</td>
                         <td>{relationship.relationshipType}</td>
                       </tr>
@@ -66,10 +94,12 @@ const RelationshipControl: React.FunctionComponent<
           </table>
         </div>
       ) : null}
-      <PrimaryButton
-        text={"Manage relationships"}
-        onClick={() => setPanelOpen(true)}
-      />
+      {props.disabled ? null : (
+        <PrimaryButton
+          text={"Manage relationships"}
+          onClick={() => setPanelOpen(true)}
+        />
+      )}
       {panelOpen && (
         <Panel
           isOpen={panelOpen}
@@ -174,6 +204,7 @@ const RelationshipControl: React.FunctionComponent<
           </div>
         </Panel>
       )}
+      {childElement}
     </div>
   );
 };

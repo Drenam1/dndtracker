@@ -22,6 +22,7 @@ export interface ILocationPanelProps {
   npcs?: Npc[];
   isOpen: boolean;
   onDismiss?: any;
+  disabled?: boolean;
   saveLocation?: (location: Location) => void;
   deleteLocation?: (location: Location) => void;
 }
@@ -94,25 +95,29 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
       type={PanelType.medium}
       onRenderFooterContent={() => (
         <div className="panelFooter">
-          <PrimaryButton
-            text="Save"
-            onClick={() => {
-              if (props.saveLocation && currentLocation) {
-                props.saveLocation(currentLocation);
-                props.onDismiss();
-              }
-            }}
-          />
-          {props.location && (
-            <DefaultButton
-              text="Delete"
-              onClick={() => {
-                if (props.deleteLocation && props.location) {
-                  props.deleteLocation(props.location);
-                  props.onDismiss();
-                }
-              }}
-            />
+          {props.disabled ? null : (
+            <>
+              <PrimaryButton
+                text="Save"
+                onClick={() => {
+                  if (props.saveLocation && currentLocation) {
+                    props.saveLocation(currentLocation);
+                    props.onDismiss();
+                  }
+                }}
+              />
+              {props.location && (
+                <DefaultButton
+                  text="Delete"
+                  onClick={() => {
+                    if (props.deleteLocation && props.location) {
+                      props.deleteLocation(props.location);
+                      props.onDismiss();
+                    }
+                  }}
+                />
+              )}
+            </>
           )}
         </div>
       )}
@@ -121,6 +126,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
         <TextField
           label="Name"
           defaultValue={props.location?.name}
+          disabled={props.disabled}
           onChange={(event, newValue) => {
             const safeName = newValue ?? "";
             if (currentLocation) {
@@ -141,6 +147,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           label="Description"
           multiline
           rows={2}
+          disabled={props.disabled}
           defaultValue={props.location?.description}
           onChange={(event, newValue) => {
             if (currentLocation) {
@@ -168,6 +175,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                 text: location.name ?? "",
               })) || []
           }
+          disabled={props.disabled}
           selectedKey={currentLocation?.greaterLocation?.id}
           onChange={(event, option) => {
             if (currentLocation && option) {
@@ -191,6 +199,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
         <ClockControl
           label="Clocks"
           defaultValue={props.location?.clocks}
+          disabled={props.disabled}
           onSave={(clocks) => {
             if (currentLocation) {
               const updatedLocation = {
@@ -228,6 +237,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                 text: npc.name ?? "",
               })) || []
           }
+          disabled={props.disabled}
           selectedKey={currentLocation?.leadership?.id}
           onChange={(event, option) => {
             if (currentLocation && option) {
@@ -251,6 +261,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
           min={0}
           max={200000}
           step={1000}
+          disabled={props.disabled}
           showValue={true}
           onChange={(newValue) => {
             if (currentLocation) {
@@ -272,6 +283,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
         label="Additional Notes"
         multiline
         rows={4}
+        disabled={props.disabled}
         defaultValue={props.location?.additionalNotes}
         onChange={(event, newValue) => {
           if (currentLocation) {

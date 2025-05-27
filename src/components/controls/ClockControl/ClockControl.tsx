@@ -9,6 +9,7 @@ import { generate_uuidv4 } from "../../../helpers/RollHelper";
 export interface IClockControlProps {
   label?: string;
   defaultValue?: Clock[];
+  disabled?: boolean;
   onSave?: (clocks: Clock[]) => void;
 }
 
@@ -18,10 +19,13 @@ const ClockControl: React.FunctionComponent<IClockControlProps> = (props) => {
   return (
     <div className="clock-control">
       <h3 className="formTitle">{props.label || "Clocks"}</h3>
-      <PrimaryButton
-        text={"Manage clocks"}
-        onClick={() => setPanelOpen(true)}
-      />
+      {props.disabled ? null : (
+        <PrimaryButton
+          text={"Manage clocks"}
+          onClick={() => setPanelOpen(true)}
+        />
+      )}
+
       {clocks && clocks.length > 0 ? (
         <div className="clocksContainer">
           {clocks.map((clock) => {

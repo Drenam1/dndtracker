@@ -1,11 +1,17 @@
 import React from "react";
 import { Faction } from "../../../models/Faction";
+import { Location } from "../../../models/Location";
+import { Npc } from "../../../models/Npc";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import "../../../genericStyles/GenericStyles.css";
+import FactionPanel from "../../Factions/FactionPanel/FactionPanel";
 
 export interface IFactionControlProps {
   defaultValue?: Faction[];
+  allNpcs?: Npc[];
   allFactions?: Faction[];
+  allLocations?: Location[];
+  disabled?: boolean;
   onSave?: (factions: Faction[]) => void;
 }
 
@@ -15,6 +21,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
   const [factions, setFactions] = React.useState<Faction[]>(
     props.defaultValue || []
   );
+  const [childElement, setChildElement] = React.useState<JSX.Element>();
 
   React.useEffect(() => {
     if (props.defaultValue && props.allFactions) {
@@ -39,7 +46,27 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
           </thead>
           <tbody>
             {factions.map((faction) => (
-              <tr key={faction.id}>
+              <tr
+                key={faction.id}
+                onClick={() => {
+                  if (!props.disabled) {
+                    setChildElement(
+                      <FactionPanel
+                        faction={faction}
+                        locations={props.allLocations ?? []}
+                        npcs={props.allNpcs ?? []}
+                        disabled={true}
+                        isOpen={true}
+                        onDismiss={() => {
+                          setChildElement(undefined);
+                        }}
+                        saveFaction={undefined}
+                        deleteFaction={undefined}
+                      />
+                    );
+                  }
+                }}
+              >
                 <td>{faction.name}</td>
                 <td>{faction.description}</td>
               </tr>
@@ -47,10 +74,12 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
           </tbody>
         </table>
       ) : null}
-      <PrimaryButton
-        text={"Manage factions"}
-        onClick={() => setPanelOpen(true)}
-      />
+      {props.disabled ? null : (
+        <PrimaryButton
+          text={"Manage factions"}
+          onClick={() => setPanelOpen(true)}
+        />
+      )}
       {panelOpen && (
         <Panel
           isOpen={panelOpen}
@@ -122,6 +151,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
           </div>
         </Panel>
       )}
+      {childElement}
     </div>
   );
 };

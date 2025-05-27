@@ -2,10 +2,16 @@ import React from "react";
 import { Location } from "../../../models/Location";
 import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import "../../../genericStyles/GenericStyles.css";
+import LocationPanel from "../../Locations/LocationPanel/LocationPanel";
+import { Faction } from "../../../models/Faction";
+import { Npc } from "../../../models/Npc";
 
 export interface ILocationControlProps {
   defaultValue?: Location[];
+  allNpcs?: Npc[];
+  allFactions?: Faction[];
   allLocations?: Location[];
+  disabled?: boolean;
   onSave?: (locations: Location[]) => void;
 }
 
@@ -15,6 +21,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
   const [locations, setLocations] = React.useState<Location[]>(
     props.defaultValue || []
   );
+  const [childElement, setChildElement] = React.useState<JSX.Element>();
 
   React.useEffect(() => {
     if (props.defaultValue && props.allLocations) {
@@ -39,7 +46,28 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
           </thead>
           <tbody>
             {locations.map((location) => (
-              <tr key={location.id}>
+              <tr
+                key={location.id}
+                onClick={() => {
+                  if (!props.disabled) {
+                    setChildElement(
+                      <LocationPanel
+                        location={location}
+                        factions={props.allFactions ?? []}
+                        locations={props.allLocations ?? []}
+                        npcs={props.allNpcs ?? []}
+                        disabled={true}
+                        isOpen={true}
+                        onDismiss={() => {
+                          setChildElement(undefined);
+                        }}
+                        saveLocation={undefined}
+                        deleteLocation={undefined}
+                      />
+                    );
+                  }
+                }}
+              >
                 <td>{location.name}</td>
                 <td>{location.description}</td>
               </tr>
@@ -47,10 +75,12 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
           </tbody>
         </table>
       ) : null}
-      <PrimaryButton
-        text={"Manage locations"}
-        onClick={() => setPanelOpen(true)}
-      />
+      {props.disabled ? null : (
+        <PrimaryButton
+          text={"Manage locations"}
+          onClick={() => setPanelOpen(true)}
+        />
+      )}
       {panelOpen && (
         <Panel
           isOpen={panelOpen}
@@ -124,6 +154,7 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
           </div>
         </Panel>
       )}
+      {childElement}
     </div>
   );
 };
