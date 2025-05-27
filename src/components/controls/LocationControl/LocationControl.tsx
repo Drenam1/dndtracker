@@ -25,9 +25,11 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
 
   React.useEffect(() => {
     if (props.defaultValue && props.allLocations) {
-      const selectedLocations = props.allLocations.filter((location) =>
-        props.defaultValue!.some((dl) => dl.id === location.id)
-      );
+      const selectedLocations = props.defaultValue.map((location) => {
+        return (
+          props.allLocations?.find((loc) => loc.id === location.id) || location
+        );
+      });
       setLocations(selectedLocations);
     }
   }, [props.defaultValue, props.allLocations]);

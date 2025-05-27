@@ -26,9 +26,11 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
 
   React.useEffect(() => {
     if (props.defaultValue && props.allFactions) {
-      const selectedFactions = props.allFactions.filter((faction) =>
-        props.defaultValue!.some((df) => df.id === faction.id)
-      );
+      const selectedFactions = props.defaultValue.map((faction) => {
+        return (
+          props.allFactions?.find((fac) => fac.id === faction.id) || faction
+        );
+      });
       setFactions(selectedFactions);
     }
   }, [props.defaultValue, props.allFactions]);
