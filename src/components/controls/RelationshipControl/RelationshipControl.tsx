@@ -36,7 +36,7 @@ const RelationshipControl: React.FunctionComponent<
     });
     setRelationships(updatedRelationships || []);
   }, [props.defaultValue, props.allNpcs]);
-  console.log(childElement);
+
   return (
     <div className="npc-control">
       <h3 className="formTitle">People</h3>

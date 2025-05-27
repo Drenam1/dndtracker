@@ -22,6 +22,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
     props.defaultValue || []
   );
   const [childElement, setChildElement] = React.useState<JSX.Element>();
+  const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (props.defaultValue && props.allFactions) {
@@ -32,7 +33,9 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
     }
   }, [props.defaultValue, props.allFactions]);
 
-  const [panelOpen, setPanelOpen] = React.useState<boolean>(false);
+  console.log(props.defaultValue);
+
+  console.log(props.allNpcs);
   return (
     <div className="faction-control">
       <h3 className="formTitle">Factions</h3>
@@ -54,6 +57,7 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
                       <FactionPanel
                         faction={faction}
                         locations={props.allLocations ?? []}
+                        factions={props.allFactions ?? []}
                         npcs={props.allNpcs ?? []}
                         disabled={true}
                         isOpen={true}

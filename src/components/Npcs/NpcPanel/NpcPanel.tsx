@@ -52,7 +52,6 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       setCurrentNpc(props.npc);
     }
   }, [props.npc]);
-  console.log(props.disabled);
 
   return (
     <Panel
@@ -113,7 +112,6 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
                       ? currentNpc?.factions
                       : RandomizationHelper.randomizeFactions(props.factions),
                 };
-                console.log("Updated NPC:", updatedNpc);
                 setCurrentNpc(updatedNpc);
               }}
             />
@@ -274,6 +272,8 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
         <LocationControl
           defaultValue={currentNpc?.locations}
           allLocations={props.locations}
+          allFactions={props.factions}
+          allNpcs={props.npcs}
           disabled={props.disabled}
           onSave={(locations: Location[]) => {
             if (currentNpc) {
@@ -293,6 +293,8 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
         <FactionControl
           defaultValue={currentNpc?.factions}
           allFactions={props.factions}
+          allNpcs={props.npcs}
+          allLocations={props.locations}
           disabled={props.disabled}
           onSave={(factions: Faction[]) => {
             if (currentNpc) {

@@ -14,6 +14,8 @@ import { Location } from "../../../models/Location";
 import ClockControl from "../../controls/ClockControl/ClockControl";
 import { Npc } from "../../../models/Npc";
 import { Faction } from "../../../models/Faction";
+import NpcPanel from "../../Npcs/NpcPanel/NpcPanel";
+import FactionPanel from "../../Factions/FactionPanel/FactionPanel";
 
 export interface ILocationPanelProps {
   location?: Location;
@@ -41,6 +43,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
       clocks: [],
     }
   );
+  const [childElement, setChildElement] = React.useState<JSX.Element>();
 
   React.useEffect(() => {
     if (props.location) {
@@ -308,7 +311,46 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
             <ul>
               {getAllAssociatedFactions(currentLocation)?.map(
                 (faction: any) => (
-                  <li key={faction.id}>{faction.name}</li>
+                  <li
+                    key={faction.id}
+                    style={{ listStyle: "none", margin: 0, padding: 0 }}
+                  >
+                    <button
+                      type="button"
+                      className="npc-list-item-button"
+                      style={{
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        margin: 0,
+                        textAlign: "left",
+                        cursor: props.disabled ? "default" : "pointer",
+                        width: "100%",
+                      }}
+                      onClick={() => {
+                        if (!props.disabled) {
+                          setChildElement(
+                            <FactionPanel
+                              faction={faction}
+                              factions={props.factions ?? []}
+                              locations={props.locations ?? []}
+                              npcs={props.npcs ?? []}
+                              disabled={true}
+                              isOpen={true}
+                              onDismiss={() => {
+                                setChildElement(undefined);
+                              }}
+                              saveFaction={undefined}
+                              deleteFaction={undefined}
+                            />
+                          );
+                        }
+                      }}
+                      disabled={props.disabled}
+                    >
+                      {faction.name}
+                    </button>
+                  </li>
                 )
               )}
             </ul>
@@ -325,9 +367,49 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                 return nameA.localeCompare(nameB);
               })
               ?.map((npc: any) => (
-                <li key={npc.id}>{npc.name}</li>
+                <li
+                  key={npc.id}
+                  style={{ listStyle: "none", margin: 0, padding: 0 }}
+                >
+                  <button
+                    type="button"
+                    className="npc-list-item-button"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      margin: 0,
+                      textAlign: "left",
+                      cursor: props.disabled ? "default" : "pointer",
+                      width: "100%",
+                    }}
+                    onClick={() => {
+                      if (!props.disabled) {
+                        setChildElement(
+                          <NpcPanel
+                            npc={npc}
+                            factions={props.factions ?? []}
+                            locations={props.locations ?? []}
+                            npcs={props.npcs ?? []}
+                            disabled={true}
+                            isOpen={true}
+                            onDismiss={() => {
+                              setChildElement(undefined);
+                            }}
+                            saveNpc={undefined}
+                            deleteNpc={undefined}
+                          />
+                        );
+                      }
+                    }}
+                    disabled={props.disabled}
+                  >
+                    {npc.name}
+                  </button>
+                </li>
               ))}
           </ul>
+          {childElement}
         </div>
       )}
     </Panel>

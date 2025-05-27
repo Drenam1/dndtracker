@@ -106,6 +106,7 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
         <FactionPanel
           faction={selectedFaction}
           locations={props.locations}
+          factions={props.factions}
           npcs={props.npcs}
           isOpen={panelOpen}
           onDismiss={() => {
