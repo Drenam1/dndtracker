@@ -33,9 +33,6 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
     }
   }, [props.defaultValue, props.allFactions]);
 
-  console.log(props.defaultValue);
-
-  console.log(props.allNpcs);
   return (
     <div className="faction-control">
       <h3 className="formTitle">Factions</h3>
