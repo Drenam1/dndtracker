@@ -15,6 +15,7 @@ import FactionControl from "../../controls/FactionControl/FactionControl";
 import LocationControl from "../../controls/LocationControl/LocationControl";
 import RelationshipControl from "../../controls/RelationshipControl/RelationshipControl";
 import ClockControl from "../../controls/ClockControl/ClockControl";
+import RandomizationHelper from "../../../helpers/RandomizationHelper";
 
 export interface INpcPanelProps {
   npc?: Npc;
@@ -50,6 +51,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       setCurrentNpc(props.npc);
     }
   }, [props.npc]);
+  console.log(currentNpc);
 
   return (
     <Panel
@@ -61,6 +63,57 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       isLightDismiss={true}
       isBlocking={true}
       type={PanelType.medium}
+      onRenderHeader={() => (
+        <DefaultButton
+          text="Prefill empty fields"
+          onClick={() => {
+            const randomGender = RandomizationHelper.randomizeGender();
+            const randomId = generate_uuidv4();
+            const updatedNpc = {
+              ...currentNpc,
+              id: currentNpc?.id ?? randomId,
+              name:
+                currentNpc?.name ||
+                RandomizationHelper.randomizeName(randomGender),
+              physicalDescription:
+                currentNpc?.physicalDescription ||
+                `${RandomizationHelper.randomizeAppearance()} ${randomGender.toLowerCase()}`,
+              voiceNotes:
+                currentNpc?.voiceNotes ||
+                RandomizationHelper.randomizeVoiceNote(),
+              personality:
+                currentNpc?.personality ||
+                RandomizationHelper.randomizePersonality(),
+              combatTactics:
+                currentNpc?.combatTactics || "No combat tactics provided.",
+              socialTactics:
+                currentNpc?.socialTactics || "No social tactics provided.",
+              additionalNotes:
+                currentNpc?.additionalNotes || "No additional notes provided.",
+              clocks: currentNpc?.clocks || [],
+              relationships:
+                (currentNpc?.relationships?.length ?? 0) > 0
+                  ? currentNpc?.relationships
+                  : [
+                      RandomizationHelper.randomizeRelationship(
+                        props.npc || currentNpc || { id: randomId },
+                        props.npcs
+                      ),
+                    ],
+              locations:
+                (currentNpc?.locations?.length ?? 0) > 0
+                  ? currentNpc?.locations
+                  : RandomizationHelper.randomizeLocations(props.locations),
+              factions:
+                (currentNpc?.factions?.length ?? 0) > 0
+                  ? currentNpc?.factions
+                  : RandomizationHelper.randomizeFactions(props.factions),
+            };
+            console.log("Updated NPC:", updatedNpc);
+            setCurrentNpc(updatedNpc);
+          }}
+        />
+      )}
       onRenderFooterContent={() => (
         <div className="panelFooter">
           <PrimaryButton
@@ -89,7 +142,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       <div className="control">
         <TextField
           label="Name"
-          defaultValue={props.npc?.name}
+          value={currentNpc?.name}
           onChange={(event, newValue) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -110,7 +163,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           label="Physical"
           multiline
           rows={2}
-          defaultValue={props.npc?.physicalDescription}
+          value={currentNpc?.physicalDescription}
           onChange={(event, newValue) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -130,7 +183,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           label="Voice Notes"
           multiline
           rows={2}
-          defaultValue={props.npc?.voiceNotes}
+          value={currentNpc?.voiceNotes}
           onChange={(event, newValue) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -150,7 +203,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           label="Personality"
           multiline
           rows={2}
-          defaultValue={props.npc?.personality}
+          value={currentNpc?.personality}
           onChange={(event, newValue) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -167,7 +220,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           }}
         />
         <ClockControl
-          defaultValue={props.npc?.clocks}
+          defaultValue={currentNpc?.clocks}
           onSave={(clocks) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -243,7 +296,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           label="Combat Tactics"
           multiline
           rows={2}
-          defaultValue={props.npc?.combatTactics}
+          value={currentNpc?.combatTactics}
           onChange={(event, newValue) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -263,7 +316,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
           label="Social Tactics"
           multiline
           rows={2}
-          defaultValue={props.npc?.socialTactics}
+          value={currentNpc?.socialTactics}
           onChange={(event, newValue) => {
             if (currentNpc) {
               const updatedNpc = {
@@ -284,7 +337,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
         label="Additional Notes"
         multiline
         rows={4}
-        defaultValue={props.npc?.additionalNotes}
+        value={currentNpc?.additionalNotes}
         onChange={(event, newValue) => {
           if (currentNpc) {
             const updatedNpc = {
