@@ -51,23 +51,21 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
               <tr
                 key={location.id}
                 onClick={() => {
-                  if (!props.disabled) {
-                    setChildElement(
-                      <LocationPanel
-                        location={location}
-                        factions={props.allFactions ?? []}
-                        locations={props.allLocations ?? []}
-                        npcs={props.allNpcs ?? []}
-                        disabled={true}
-                        isOpen={true}
-                        onDismiss={() => {
-                          setChildElement(undefined);
-                        }}
-                        saveLocation={undefined}
-                        deleteLocation={undefined}
-                      />
-                    );
-                  }
+                  setChildElement(
+                    <LocationPanel
+                      location={location}
+                      factions={props.allFactions ?? []}
+                      locations={props.allLocations ?? []}
+                      npcs={props.allNpcs ?? []}
+                      disabled={true}
+                      isOpen={true}
+                      onDismiss={() => {
+                        setChildElement(undefined);
+                      }}
+                      saveLocation={undefined}
+                      deleteLocation={undefined}
+                    />
+                  );
                 }}
               >
                 <td>{location.name}</td>

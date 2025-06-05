@@ -51,23 +51,21 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
               <tr
                 key={faction.id}
                 onClick={() => {
-                  if (!props.disabled) {
-                    setChildElement(
-                      <FactionPanel
-                        faction={faction}
-                        locations={props.allLocations ?? []}
-                        factions={props.allFactions ?? []}
-                        npcs={props.allNpcs ?? []}
-                        disabled={true}
-                        isOpen={true}
-                        onDismiss={() => {
-                          setChildElement(undefined);
-                        }}
-                        saveFaction={undefined}
-                        deleteFaction={undefined}
-                      />
-                    );
-                  }
+                  setChildElement(
+                    <FactionPanel
+                      faction={faction}
+                      locations={props.allLocations ?? []}
+                      factions={props.allFactions ?? []}
+                      npcs={props.allNpcs ?? []}
+                      disabled={true}
+                      isOpen={true}
+                      onDismiss={() => {
+                        setChildElement(undefined);
+                      }}
+                      saveFaction={undefined}
+                      deleteFaction={undefined}
+                    />
+                  );
                 }}
               >
                 <td>{faction.name}</td>

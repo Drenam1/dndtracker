@@ -324,29 +324,26 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                         padding: 0,
                         margin: 0,
                         textAlign: "left",
-                        cursor: props.disabled ? "default" : "pointer",
+                        cursor: "pointer",
                         width: "100%",
                       }}
                       onClick={() => {
-                        if (!props.disabled) {
-                          setChildElement(
-                            <FactionPanel
-                              faction={faction}
-                              factions={props.factions ?? []}
-                              locations={props.locations ?? []}
-                              npcs={props.npcs ?? []}
-                              disabled={true}
-                              isOpen={true}
-                              onDismiss={() => {
-                                setChildElement(undefined);
-                              }}
-                              saveFaction={undefined}
-                              deleteFaction={undefined}
-                            />
-                          );
-                        }
+                        setChildElement(
+                          <FactionPanel
+                            faction={faction}
+                            factions={props.factions ?? []}
+                            locations={props.locations ?? []}
+                            npcs={props.npcs ?? []}
+                            disabled={true}
+                            isOpen={true}
+                            onDismiss={() => {
+                              setChildElement(undefined);
+                            }}
+                            saveFaction={undefined}
+                            deleteFaction={undefined}
+                          />
+                        );
                       }}
-                      disabled={props.disabled}
                     >
                       {faction.name}
                     </button>
@@ -380,29 +377,26 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                       padding: 0,
                       margin: 0,
                       textAlign: "left",
-                      cursor: props.disabled ? "default" : "pointer",
+                      cursor: "pointer",
                       width: "100%",
                     }}
                     onClick={() => {
-                      if (!props.disabled) {
-                        setChildElement(
-                          <NpcPanel
-                            npc={npc}
-                            factions={props.factions ?? []}
-                            locations={props.locations ?? []}
-                            npcs={props.npcs ?? []}
-                            disabled={true}
-                            isOpen={true}
-                            onDismiss={() => {
-                              setChildElement(undefined);
-                            }}
-                            saveNpc={undefined}
-                            deleteNpc={undefined}
-                          />
-                        );
-                      }
+                      setChildElement(
+                        <NpcPanel
+                          npc={npc}
+                          factions={props.factions ?? []}
+                          locations={props.locations ?? []}
+                          npcs={props.npcs ?? []}
+                          disabled={true}
+                          isOpen={true}
+                          onDismiss={() => {
+                            setChildElement(undefined);
+                          }}
+                          saveNpc={undefined}
+                          deleteNpc={undefined}
+                        />
+                      );
                     }}
-                    disabled={props.disabled}
                   >
                     {npc.name}
                   </button>

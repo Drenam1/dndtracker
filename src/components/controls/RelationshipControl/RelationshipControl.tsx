@@ -63,23 +63,21 @@ const RelationshipControl: React.FunctionComponent<
                       <tr
                         key={generate_uuidv4()}
                         onClick={() => {
-                          if (!props.disabled) {
-                            setChildElement(
-                              <NpcPanel
-                                npc={relationship.person}
-                                factions={props.allFactions ?? []}
-                                locations={props.allLocations ?? []}
-                                npcs={props.allNpcs ?? []}
-                                disabled={true}
-                                isOpen={true}
-                                onDismiss={() => {
-                                  setChildElement(undefined);
-                                }}
-                                saveNpc={undefined}
-                                deleteNpc={undefined}
-                              />
-                            );
-                          }
+                          setChildElement(
+                            <NpcPanel
+                              npc={relationship.person}
+                              factions={props.allFactions ?? []}
+                              locations={props.allLocations ?? []}
+                              npcs={props.allNpcs ?? []}
+                              disabled={true}
+                              isOpen={true}
+                              onDismiss={() => {
+                                setChildElement(undefined);
+                              }}
+                              saveNpc={undefined}
+                              deleteNpc={undefined}
+                            />
+                          );
                         }}
                       >
                         <td>{relationship.person.name}</td>

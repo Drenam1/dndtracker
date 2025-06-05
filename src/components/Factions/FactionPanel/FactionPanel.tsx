@@ -295,31 +295,39 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
                 return nameA.localeCompare(nameB);
               })
               .map((npc: any) => (
-                <li key={npc.id} style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                <li
+                  key={npc.id}
+                  style={{ listStyle: "none", margin: 0, padding: 0 }}
+                >
                   <button
                     type="button"
                     className="npc-list-item-button"
-                    style={{ background: "none", border: "none", padding: 0, margin: 0, textAlign: "left", cursor: props.disabled ? "default" : "pointer", width: "100%" }}
-                    onClick={() => {
-                      if (!props.disabled) {
-                        setChildElement(
-                          <NpcPanel
-                            npc={npc}
-                            factions={props.factions ?? []}
-                            locations={props.locations ?? []}
-                            npcs={props.npcs ?? []}
-                            disabled={true}
-                            isOpen={true}
-                            onDismiss={() => {
-                              setChildElement(undefined);
-                            }}
-                            saveNpc={undefined}
-                            deleteNpc={undefined}
-                          />
-                        );
-                      }
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      margin: 0,
+                      textAlign: "left",
+                      cursor: "pointer",
+                      width: "100%",
                     }}
-                    disabled={props.disabled}
+                    onClick={() => {
+                      setChildElement(
+                        <NpcPanel
+                          npc={npc}
+                          factions={props.factions ?? []}
+                          locations={props.locations ?? []}
+                          npcs={props.npcs ?? []}
+                          disabled={true}
+                          isOpen={true}
+                          onDismiss={() => {
+                            setChildElement(undefined);
+                          }}
+                          saveNpc={undefined}
+                          deleteNpc={undefined}
+                        />
+                      );
+                    }}
                   >
                     {npc.name}
                   </button>
