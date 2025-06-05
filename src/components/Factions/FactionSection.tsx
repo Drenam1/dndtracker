@@ -55,7 +55,7 @@ const FactionSection: React.FunctionComponent<IFactionSectionProps> = (
         }}
         className="filterInput"
       />
-      <div>
+      <div className="tableContainer">
         <table>
           <thead>
             <tr>

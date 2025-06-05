@@ -72,7 +72,7 @@ const LocationSection: React.FunctionComponent<ILocationSectionProps> = (
         }}
         className="filterInput"
       />
-      <div>
+      <div className="tableContainer">
         <table>
           <thead>
             <tr>

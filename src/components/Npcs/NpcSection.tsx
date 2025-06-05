@@ -59,7 +59,7 @@ const NpcSection: React.FunctionComponent<INpcSectionProps> = (props) => {
         }}
         className="filterInput"
       />
-      <div>
+      <div className="tableContainer">
         <table>
           <thead>
             <tr>

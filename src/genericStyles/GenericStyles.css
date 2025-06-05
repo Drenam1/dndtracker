@@ -38,3 +38,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.tableContainer {
+  width: 100%;
+  > table {
+    margin: auto;
+  }
+}
