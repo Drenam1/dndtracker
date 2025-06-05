@@ -50,7 +50,8 @@ const LocationControl: React.FunctionComponent<ILocationControlProps> = (
             {locations.map((location) => (
               <tr
                 key={location.id}
-                onClick={() => {
+                style={{ cursor: "pointer" }}
+                onDoubleClick={() => {
                   setChildElement(
                     <LocationPanel
                       location={location}

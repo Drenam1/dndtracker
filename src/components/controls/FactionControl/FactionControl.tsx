@@ -50,7 +50,8 @@ const FactionControl: React.FunctionComponent<IFactionControlProps> = (
             {factions.map((faction) => (
               <tr
                 key={faction.id}
-                onClick={() => {
+                style={{ cursor: "pointer" }}
+                onDoubleClick={() => {
                   setChildElement(
                     <FactionPanel
                       faction={faction}

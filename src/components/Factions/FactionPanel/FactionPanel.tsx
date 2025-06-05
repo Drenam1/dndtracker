@@ -311,7 +311,7 @@ const FactionPanel: React.FunctionComponent<IFactionPanelProps> = (props) => {
                       cursor: "pointer",
                       width: "100%",
                     }}
-                    onClick={() => {
+                    onDoubleClick={() => {
                       setChildElement(
                         <NpcPanel
                           npc={npc}

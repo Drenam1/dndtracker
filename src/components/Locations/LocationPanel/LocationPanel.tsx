@@ -327,7 +327,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                         cursor: "pointer",
                         width: "100%",
                       }}
-                      onClick={() => {
+                      onDoubleClick={() => {
                         setChildElement(
                           <FactionPanel
                             faction={faction}
@@ -380,7 +380,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
                       cursor: "pointer",
                       width: "100%",
                     }}
-                    onClick={() => {
+                    onDoubleClick={() => {
                       setChildElement(
                         <NpcPanel
                           npc={npc}

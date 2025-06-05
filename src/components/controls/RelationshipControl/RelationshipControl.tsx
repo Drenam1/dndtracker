@@ -62,7 +62,8 @@ const RelationshipControl: React.FunctionComponent<
                     return (
                       <tr
                         key={generate_uuidv4()}
-                        onClick={() => {
+                        style={{ cursor: "pointer" }}
+                        onDoubleClick={() => {
                           setChildElement(
                             <NpcPanel
                               npc={relationship.person}
