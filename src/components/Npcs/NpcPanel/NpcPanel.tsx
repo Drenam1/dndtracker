@@ -46,6 +46,7 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       additionalNotes: "",
     }
   );
+  const [editingUrl, setEditingUrl] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (props.npc) {
@@ -63,8 +64,56 @@ const NpcPanel: React.FunctionComponent<INpcPanelProps> = (props) => {
       isLightDismiss={true}
       isBlocking={true}
       type={PanelType.medium}
+      styles={{
+        navigation: {
+          paddingLeft: "24px",
+        },
+      }}
       onRenderHeader={() => (
         <>
+          <div className="panelHeader">
+            {!props.disabled && (
+              <DefaultButton
+                text={editingUrl ? "Save URL" : "Edit URL"}
+                onClick={() => {
+                  if (editingUrl) {
+                    setEditingUrl(false);
+                  } else {
+                    setEditingUrl(true);
+                  }
+                }}
+                styles={{ root: { marginRight: "5px" } }}
+              />
+            )}
+            {editingUrl ? (
+              <input
+                type="text"
+                value={currentNpc?.url || ""}
+                onChange={(e) => {
+                  if (currentNpc) {
+                    const updatedNpc = {
+                      ...currentNpc,
+                      url: e.target.value,
+                    };
+                    setCurrentNpc(updatedNpc);
+                  } else {
+                    setCurrentNpc({
+                      id: generate_uuidv4(),
+                      url: e.target.value,
+                    });
+                  }
+                }}
+              ></input>
+            ) : (
+              <a
+                href={currentNpc?.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {currentNpc?.url}
+              </a>
+            )}
+          </div>
           {props.disabled ? null : (
             <DefaultButton
               text="Prefill empty fields"

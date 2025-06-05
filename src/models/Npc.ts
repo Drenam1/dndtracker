@@ -19,4 +19,5 @@ export interface Npc {
   socialTactics?: string;
   additionalNotes?: string;
   clocks?: Clock[];
+  url?: string;
 }

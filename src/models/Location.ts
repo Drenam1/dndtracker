@@ -10,4 +10,5 @@ export interface Location {
   population?: number;
   clocks?: Clock[];
   additionalNotes?: string;
+  url?: string;
 }

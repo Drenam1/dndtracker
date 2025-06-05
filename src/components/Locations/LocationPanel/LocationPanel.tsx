@@ -44,6 +44,7 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
     }
   );
   const [childElement, setChildElement] = React.useState<JSX.Element>();
+  const [editingUrl, setEditingUrl] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (props.location) {
@@ -96,6 +97,56 @@ const LocationPanel: React.FunctionComponent<ILocationPanelProps> = (props) => {
       isLightDismiss={true}
       isBlocking={true}
       type={PanelType.medium}
+      styles={{
+        navigation: {
+          paddingLeft: "24px",
+        },
+      }}
+      onRenderHeader={() => (
+        <div className="panelHeader">
+          {!props.disabled && (
+            <DefaultButton
+              text={editingUrl ? "Save URL" : "Edit URL"}
+              onClick={() => {
+                if (editingUrl) {
+                  setEditingUrl(false);
+                } else {
+                  setEditingUrl(true);
+                }
+              }}
+              styles={{ root: { marginRight: "5px" } }}
+            />
+          )}
+          {editingUrl ? (
+            <input
+              type="text"
+              value={currentLocation?.url ?? ""}
+              onChange={(e) => {
+                if (currentLocation) {
+                  const updatedLocation = {
+                    ...currentLocation,
+                    url: e.target.value,
+                  };
+                  setCurrentLocation(updatedLocation);
+                } else {
+                  setCurrentLocation({
+                    id: generate_uuidv4(),
+                    url: e.target.value,
+                  });
+                }
+              }}
+            ></input>
+          ) : (
+            <a
+              href={currentLocation?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {currentLocation?.url}
+            </a>
+          )}
+        </div>
+      )}
       onRenderFooterContent={() => (
         <div className="panelFooter">
           {props.disabled ? null : (

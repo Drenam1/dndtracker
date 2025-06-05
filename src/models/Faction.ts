@@ -13,4 +13,5 @@ export interface Faction {
   members?: Npc[];
   clocks?: Clock[];
   additionalNotes?: string;
+  url?: string;
 }
