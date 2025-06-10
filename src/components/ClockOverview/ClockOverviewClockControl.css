@@ -1,0 +1,51 @@
+.clocksContainer {
+  width: 100%;
+  height: auto;
+  min-height: 50px;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  & > :nth-child(even) {
+    background-color: #f0f0f0;
+  }
+}
+.container {
+  -webkit-flex: 1;
+  flex: 1;
+  min-width: 16%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 29px;
+  .entity {
+    width: 150px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 29px;
+    line-height: 29px;
+    text-indent: 5px;
+  }
+  .title {
+    text-indent: 5px;
+  }
+  .clockSegment {
+    height: 25px;
+  }
+}
+.clockSvg {
+  transform: rotate(-89deg);
+}
+
+.clockEditRow {
+  margin-bottom: 5px;
+}

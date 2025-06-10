@@ -4,4 +4,7 @@ export interface Clock {
   description: string;
   totalSegments: number;
   filledSegments: number;
+  itemId?: string;
+  itemName?: string;
+  itemType?: string;
 }

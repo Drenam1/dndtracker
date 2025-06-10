@@ -28,11 +28,12 @@
   }
 }
 
-#saveLoadContainer {
+#topControlsContainer {
   display: flex;
   flex-direction: row;
   gap: 10px;
   margin: 10px 0px;
+  flex-wrap: wrap;
 }
 #buttonContainer {
   display: flex;

@@ -8,6 +8,7 @@ import { Npc } from "./models/Npc";
 import NpcSection from "./components/Npcs/NpcSection";
 import FactionSection from "./components/Factions/FactionSection";
 import LocationSection from "./components/Locations/LocationSection";
+import ClockOverviewPanel from "./components/ClockOverview/ClockOverviewPanel";
 
 initializeIcons();
 //To compile, run npm start
@@ -16,6 +17,8 @@ function App() {
   const [factions, setFactions] = React.useState<Faction[]>([]);
   const [npcs, setNpcs] = React.useState<Npc[]>([]);
   const [locations, setLocations] = React.useState<Location[]>([]);
+  const [clockOverviewPanelOpen, setClockOverviewPanelOpen] =
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
     const loadFromLocalCache = () => {
@@ -173,7 +176,7 @@ function App() {
 
   return (
     <div className="App">
-      <div id="saveLoadContainer">
+      <div id="topControlsContainer">
         <input type="text" id="fileName" placeholder="File Name" />
         <button
           id="save"
@@ -235,6 +238,14 @@ function App() {
           intervals to reduce the chance of loss of data. You should still save
           to a file regularly.
         </p>
+        <button
+          id="editClocks"
+          onClick={() => {
+            setClockOverviewPanelOpen(true);
+          }}
+        >
+          Edit existing clocks
+        </button>
       </div>
       <div id="containerContainer">
         <NpcSection
@@ -259,6 +270,61 @@ function App() {
           deleteLocation={deleteLocation}
         />
       </div>
+      {clockOverviewPanelOpen && (
+        <ClockOverviewPanel
+          npcs={npcs}
+          factions={factions}
+          locations={locations}
+          onDismiss={() => setClockOverviewPanelOpen(false)}
+          saveClocks={(clocks) => {
+            // Save clocks logic here if needed
+            console.log("Clocks saved:", clocks);
+            clocks.forEach((clock) => {
+              if (clock.itemType === "npc") {
+                const npcIndex = npcs.findIndex(
+                  (npc) => npc.id === clock.itemId
+                );
+                if (npcIndex !== -1) {
+                  const updatedNpcs = [...npcs];
+                  updatedNpcs[npcIndex].clocks =
+                    updatedNpcs[npcIndex].clocks?.filter(
+                      (existingClock) => existingClock.id !== clock.id
+                    ) || [];
+                  updatedNpcs[npcIndex]?.clocks?.push(clock);
+                  setNpcs(updatedNpcs);
+                }
+              } else if (clock.itemType === "faction") {
+                const factionIndex = factions.findIndex(
+                  (faction) => faction.id === clock.itemId
+                );
+                if (factionIndex !== -1) {
+                  const updatedFactions = [...factions];
+                  updatedFactions[factionIndex].clocks =
+                    updatedFactions[factionIndex].clocks?.filter(
+                      (existingClock) => existingClock.id !== clock.id
+                    ) || [];
+                  updatedFactions[factionIndex]?.clocks?.push(clock);
+                  setFactions(updatedFactions);
+                }
+              } else if (clock.itemType === "location") {
+                const locationIndex = locations.findIndex(
+                  (location) => location.id === clock.itemId
+                );
+                if (locationIndex !== -1) {
+                  const updatedLocations = [...locations];
+                  updatedLocations[locationIndex].clocks =
+                    updatedLocations[locationIndex].clocks?.filter(
+                      (existingClock) => existingClock.id !== clock.id
+                    ) || [];
+                  updatedLocations[locationIndex]?.clocks?.push(clock);
+                  setLocations(updatedLocations);
+                }
+              }
+            });
+            setClockOverviewPanelOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -42,5 +42,11 @@
   width: 100%;
   > table {
     margin: auto;
+    border-collapse: collapse;
+    > tbody {
+      > tr:nth-child(odd) {
+        background-color: #f5f5f5;
+      }
+    }
   }
 }
