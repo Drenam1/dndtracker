@@ -61,7 +61,6 @@ const ClockOverviewPanel: React.FunctionComponent<IClockOverviewPanelProps> = (
     });
     setAllClocks([...npcClocks, ...factionClocks, ...locationClocks]);
   }, [props.npcs, props.factions, props.locations]);
-  console.log("allClocks", allClocks);
 
   return (
     <Panel

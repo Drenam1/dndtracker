@@ -21,7 +21,6 @@ const ClockOverviewClockControl: React.FunctionComponent<
   React.useEffect(() => {
     setClocks(props.defaultValue || []);
   }, [props.defaultValue]);
-  console.log(clocks);
   return (
     <div className="clock-control">
       <h3 className="formTitle">{props.label || "Clocks"}</h3>
@@ -47,7 +46,7 @@ const ClockOverviewClockControl: React.FunctionComponent<
                 if (clock.name?.length > 0) {
                   const pieChart = drawPieChart(clock);
                   return (
-                    <tr key={clock.name}>
+                    <tr key={clock.id}>
                       <td className="entity" title={clock.itemName ?? ""}>
                         {clock.itemName ?? ""}
                       </td>

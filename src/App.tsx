@@ -278,7 +278,6 @@ function App() {
           onDismiss={() => setClockOverviewPanelOpen(false)}
           saveClocks={(clocks) => {
             // Save clocks logic here if needed
-            console.log("Clocks saved:", clocks);
             clocks.forEach((clock) => {
               if (clock.itemType === "npc") {
                 const npcIndex = npcs.findIndex(
