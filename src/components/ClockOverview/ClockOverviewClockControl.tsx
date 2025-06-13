@@ -4,7 +4,6 @@ import { Panel, PanelType, PrimaryButton } from "@fluentui/react";
 import { drawPieChart } from "../../helpers/ClockHelper";
 import "./ClockOverviewClockControl.css";
 import "../../genericStyles/GenericStyles.css";
-import { generate_uuidv4 } from "../../helpers/RollHelper";
 
 export interface IClockOverviewClockControlProps {
   label?: string;

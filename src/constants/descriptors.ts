@@ -10,6 +10,18 @@ export default class Descriptors {
     "Gentle and nurturing",
     "Mysterious and enigmatic",
     "Energetic and enthusiastic",
+    "Whispery and secretive",
+    "Gravelly and rough",
+    "Smooth and silky",
+    "Authoritative and firm",
+    "Husky and seductive",
+    "Warm and inviting",
+    "Cold and distant",
+    "Playful and teasing",
+    "Stern and serious",
+    "Excitable and animated",
+    "Bubbly and effervescent",
+    "Monotone and flat",
   ];
   public static readonly PersonalityTraits: string[] = [
     "I idolize a particular hero of my faith and constantly refer to that person's deeds and example.",
@@ -116,6 +128,8 @@ export default class Descriptors {
     "I think anyone who's nice to me is hiding evil intent.",
     "I don't like to bathe.",
     "I bluntly say what other people are hinting or hiding.",
+    "I would rather run than fight.",
+    "I feel far more comfortable around animals than people.",
   ];
   public static readonly PhysicalTraits: string[] = [
     "Tall and imposing",
@@ -139,5 +153,6 @@ export default class Descriptors {
     "Plain and unassuming",
     "Striking and unforgettable",
     "Disheveled and chaotic",
+    "Pierced and tattooed",
   ];
 }
